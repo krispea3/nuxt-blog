@@ -13,8 +13,10 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: pkg.description }
     ],
+    // Here we can add external head links that apply to every html file
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"}
     ]
   },
 
