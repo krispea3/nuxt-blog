@@ -1,21 +1,27 @@
 <template>
-  <b-col>
-    <p>List of posts: {{ posts }}</p>
-    <b-button variant="primary" @click="loadPost">Post detail</b-button>
-  </b-col>
+  <b-row>
+    <b-col>
+      <b-card-group deck>
+        <Post v-for="post in posts" :key="post.id" :postId="post.id"></Post>
+      </b-card-group>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
+import Post from "../../components/post"
+
 export default {
   created () {
-    console.log('Created hook')
-    console.log(this.$store)
     this.posts = this.$store.getters.posts
   },
   data () {
     return {
       posts: []
     }
+  },
+  components: {
+    Post
   },
   // computed: {
   //   posts () {
