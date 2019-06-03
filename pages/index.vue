@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-row align-h="center">
-      <b-col cols="10">
+      <b-col>
         <b-jumbotron 
             header="Get the latest Tech-News!" 
             lead="All about programming, frameworks and lot more" 
