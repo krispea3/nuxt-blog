@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info" class="mt-3 mb-3">
+  <b-navbar toggleable="lg" type="dark" variant="dark" class="mt-3 mb-3">
     <b-navbar-brand to="/">Nuxt-Blog</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
