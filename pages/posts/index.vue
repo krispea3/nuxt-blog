@@ -3,8 +3,13 @@
     <b-col>
       <b-card-group deck>
         <b-card v-for="post in posts" :key="post.id"
-            @click="postDetail(post.id)"
             :title="post.title">
+          <b-button 
+            @click="postDetail(post.id)" 
+            variant="primary"
+            size="sm">
+              Details
+          </b-button>
           <div slot="footer"><small class="text-muted">Last updated 3 mins ago</small></div>
         </b-card>
       </b-card-group>
