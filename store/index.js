@@ -1,26 +1,42 @@
 export const state = () => ({
   posts: [
     { id: 1, 
-      title: 'test post1',
-      text$: 'Some post text'
+      title: 'New Acer Laptop',
+      text: 'Some post text about Acer Laptop',
+      imgUrl: '~/static/laptop1.jpg',
+      imgAlt: 'laptop'
     },
     { id: 2, 
-      title: 'test post2',
-      text$: 'Some post text for id 2'
+      title: 'TensorFlow explained',
+      text: 'Some post text for TensorFlow',
+      imgUrl: '~/static/ai1.jpg',
+      imgAlt: 'ai'
     },
-  ]
+  ],
+  post: {}
 })
 
 export const mutations = {
-
+  setPost (state, post) {
+    state.post = post
+  }
 }
 
-export const ations = {
+export const actions = {
+  setPost ({ commit, state }, postId) {
+    const foundIndex = state.posts.findIndex(post => post.id == postId);
+    const post = state.posts[foundIndex]
+    console.log(post)
+    commit('setPost', post)
+  }
 
 }
 
 export const getters = {
   posts (state) {
     return state.posts
+  },
+  post (state) {
+    return state.post
   }
 }

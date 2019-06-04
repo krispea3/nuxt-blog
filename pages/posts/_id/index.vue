@@ -1,7 +1,7 @@
 <template>
   <b-row class="text-center" align-h="center">
     <b-col cols="8">
-      <Post :postId="postId"/>
+      <Post :post="post"/>
     </b-col>
   </b-row>
 </template>
@@ -10,12 +10,15 @@
 import Post from '~/components/post'
 
 export default {
+  created () {
+    this.$store.dispatch('setPost', this.$route.params.id)
+  },
   components: {
     Post
   },
   computed: {
-    postId () {
-      return this.$route.params.id
+    post () {
+      return this.$store.getters.post
     }
   }
 }

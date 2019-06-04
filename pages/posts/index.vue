@@ -2,15 +2,17 @@
   <b-row>
     <b-col>
       <b-card-group deck>
-        <Post v-for="post in posts" :key="post.id" :postId="post.id"></Post>
+        <b-card v-for="post in posts" :key="post.id"
+            @click="postDetail(post.id)"
+            :title="post.title">
+          <div slot="footer"><small class="text-muted">Last updated 3 mins ago</small></div>
+        </b-card>
       </b-card-group>
     </b-col>
   </b-row>
 </template>
 
 <script>
-import Post from "../../components/post"
-
 export default {
   created () {
     this.posts = this.$store.getters.posts
@@ -20,17 +22,9 @@ export default {
       posts: []
     }
   },
-  components: {
-    Post
-  },
-  // computed: {
-  //   posts () {
-  //     return this.$store.getters.posts
-  //   }
-  // },
   methods: {
-    loadPost () {
-      this.$router.push('posts/' + '2')
+    postDetail (id) {
+      this.$router.push('posts/' + id)
     }
   }
 }

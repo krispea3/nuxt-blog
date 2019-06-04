@@ -1,10 +1,10 @@
 <template>
-  <b-card title="New Acer laptop"
-                img-src="../static/laptop1_half.jpg" 
-                img-alt="laptop" 
-                img-top>
+  <b-card :title="post.title"
+          img-src="~/static/laptop1.jpg" 
+          :img-alt="post.imgAlt" 
+          img-top>
     <b-card-text>
-      Post ID = {{ postId }}
+      Post ID = {{ post.id }}
       This is a wider card with supporting text below as a natural lead-in to additional content.
       This content is a little bit longer.
     </b-card-text>
@@ -14,6 +14,6 @@
 
 <script>
 export default {
-  props: ['postId']
+  props: ['post']
 }
 </script>
