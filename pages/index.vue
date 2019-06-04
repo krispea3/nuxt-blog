@@ -34,7 +34,7 @@ export default {
 
 <style scoped>
   .bg-image {
-    background-image: url('../static/jumbotron.jpg');
+    background-image: url('../assets/images/jumbotron.jpg');
     color: white;
   }
 </style>

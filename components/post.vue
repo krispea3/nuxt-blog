@@ -1,6 +1,6 @@
 <template>
   <b-card :title="post.title"
-          img-src="~/static/laptop1.jpg" 
+          img-src="../assets/images/ai1.jpg" 
           :img-alt="post.imgAlt" 
           img-top>
     <b-card-text>
@@ -15,6 +15,12 @@
 
 <script>
 export default {
-  props: ['post']
+  props: ['post'],
+  methods: {
+    getImgUrl () {
+      console.log(this.post.imgUrl)
+      return this.post.imgUrl
+    }
+  }
 }
 </script>

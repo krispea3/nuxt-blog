@@ -3,13 +3,13 @@ export const state = () => ({
     { id: 1, 
       title: 'New Acer Laptop',
       text: 'Some post text about Acer Laptop',
-      imgUrl: '~/static/laptop1.jpg',
+      imgUrl: '~@/assets/images/laptop1.jpg',
       imgAlt: 'laptop'
     },
     { id: 2, 
       title: 'TensorFlow explained',
       text: 'Some post text for TensorFlow',
-      imgUrl: '~/static/ai1.jpg',
+      imgUrl: '~@/assets/images/ai1.jpg',
       imgAlt: 'ai'
     },
   ],
