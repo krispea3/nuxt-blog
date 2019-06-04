@@ -26,10 +26,8 @@ export const actions = {
   setPost ({ commit, state }, postId) {
     const foundIndex = state.posts.findIndex(post => post.id == postId);
     const post = state.posts[foundIndex]
-    console.log(post)
     commit('setPost', post)
   }
-
 }
 
 export const getters = {
