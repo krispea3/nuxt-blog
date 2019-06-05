@@ -5,7 +5,7 @@
     <b-container>
       <PostList :isAdmin="true" />
     </b-container>
-    <b-button class="mt-3" variant="success">Add post</b-button>
+    <b-button @click="addPost" class="mt-3" variant="success">Add post</b-button>
   </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
   },
   components: {
     PostList
+  },
+  methods: {
+    addPost () {
+      this.$router.push('admin/newPost')
+    }
   }
 }
 </script>

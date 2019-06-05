@@ -8,10 +8,10 @@
         @click="postDetail(post.id)" 
         variant="primary"
         size="sm">
-          Details
+          View
       </b-button>
       <b-button v-if="isAdmin"
-        @click="postDetail(post.id)" 
+        @click="postEdit(post.id)" 
         variant="success"
         size="sm">
           Edit
@@ -52,6 +52,9 @@ export default {
   methods: {
     postDetail (id) {
       this.$router.push('posts/' + id)
+    },
+    postEdit (id) {
+      this.$router.push('admin/' + id)
     }
   }
 }
