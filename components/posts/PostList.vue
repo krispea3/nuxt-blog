@@ -3,13 +3,20 @@
     <b-card v-for="post in posts" 
             :key="post.id"
             :title="post.title"
-            class="mb-2">
-      <b-button 
+            class="mb-2 mr-2">
+      <b-button v-if="!isAdmin"
         @click="postDetail(post.id)" 
         variant="primary"
         size="sm">
           Details
       </b-button>
+      <b-button v-if="isAdmin"
+        @click="postDetail(post.id)" 
+        variant="success"
+        size="sm">
+          Edit
+      </b-button>
+
       <div slot="footer"><small class="text-muted">Last updated 3 mins ago</small></div>
     </b-card>
   </b-row>
@@ -34,6 +41,12 @@ export default {
   data () {
     return {
       posts: []
+    }
+  },
+  props: {
+    isAdmin: {
+      type: Boolean,
+      required: true
     }
   },
   methods: {

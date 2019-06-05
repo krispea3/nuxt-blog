@@ -17,8 +17,8 @@
   <!-- <b-row align-h="center">
     <b-col cols="10" > -->
   <b-container>
-    <b-card-group deck>
-      <PostList />
+    <b-card-group>
+      <PostList :isAdmin="isAdmin" />
     </b-card-group>      
   </b-container>
     <!-- </b-col>
@@ -30,6 +30,11 @@
 import PostList from '~/components/posts/PostList'
 
 export default {
+  data () {
+    return {
+      isAdmin: false
+    }
+  },
   components: {
     PostList
   }

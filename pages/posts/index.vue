@@ -1,7 +1,7 @@
 <template>
   <b-container>
-      <b-card-group deck>
-        <PostList />
+      <b-card-group>
+        <PostList :isAdmin="false"/>
       </b-card-group>
   </b-container>
 </template>
