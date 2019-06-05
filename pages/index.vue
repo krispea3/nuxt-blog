@@ -14,20 +14,24 @@
       </b-col>
   </b-row>
 
-  <b-row>
-    <b-col>
-      <Posts />      
-    </b-col>
-  </b-row>
+  <!-- <b-row align-h="center">
+    <b-col cols="10" > -->
+  <b-container>
+    <b-card-group deck>
+      <PostList />
+    </b-card-group>      
+  </b-container>
+    <!-- </b-col>
+  </b-row> -->
   </div>  
 </template>
 
 <script>
-import Posts from './posts/index'
+import PostList from '~/components/posts/PostList'
 
 export default {
   components: {
-    Posts
+    PostList
   }
 }
 </script>

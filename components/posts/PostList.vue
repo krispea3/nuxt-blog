@@ -1,0 +1,45 @@
+<template>
+  <b-row>
+    <b-card v-for="post in posts" 
+            :key="post.id"
+            :title="post.title"
+            class="mb-2">
+      <b-button 
+        @click="postDetail(post.id)" 
+        variant="primary"
+        size="sm">
+          Details
+      </b-button>
+      <div slot="footer"><small class="text-muted">Last updated 3 mins ago</small></div>
+    </b-card>
+  </b-row>
+</template>
+
+<script>
+export default {
+  // This vue lifecycle hook executes on the client
+  created () {
+    this.posts = this.$store.getters.posts
+  },
+  // This is a nuxt lifecycle hook. It will execute on the server and serve the page only once the data is fetched
+  // It only executes on the server the first time it's called. If we navigate away from the page then back, it will
+  // execute on the client.
+  // !!! this.whatever is not available in asyncData. We can use the context instead !!!!
+  // !!! for example we can access the store with context.store or the route with context.route !!!
+  // asyncData shouldn't be used with the normal data method
+  // asyncData (context) {
+  //   console.log(context)
+  //   return {}
+  // },
+  data () {
+    return {
+      posts: []
+    }
+  },
+  methods: {
+    postDetail (id) {
+      this.$router.push('posts/' + id)
+    }
+  }
+}
+</script>
