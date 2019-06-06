@@ -3,13 +3,16 @@
     <b-card v-for="post in posts" 
             :key="post.id"
             :title="post.title"
+            :sub-title="post.description"
             class="mb-2 mr-2">
+
       <b-button v-if="!isAdmin"
         @click="postDetail(post.id)" 
         variant="primary"
         size="sm">
           View
       </b-button>
+
       <b-button v-if="isAdmin"
         @click="postEdit(post.id)" 
         variant="success"
@@ -17,7 +20,9 @@
           Edit
       </b-button>
 
-      <div slot="footer"><small class="text-muted">Last updated 3 mins ago</small></div>
+      <div slot="footer">
+        <small class="text-muted">Last updated on {{ post.updated }} by {{ post.author }}</small>
+      </div>
     </b-card>
   </b-row>
 </template>

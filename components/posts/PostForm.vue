@@ -114,11 +114,10 @@ import axios from 'axios'
     },
     methods: {
       saveForm () {
-        if (this.post) {
-          this.formData.updated = new Date()
-        } else {
+        if (!this.post) {
           this.formData.created = new Date()
         }
+        this.formData.updated = new Date()
         this.formData.author = 'Christian'
 
         this.$store.dispatch('saveForm', this.formData)
