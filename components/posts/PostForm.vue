@@ -19,13 +19,13 @@
         id="input-group-1"
         label="Description"
         label-for="input-1">
-        <b-form-input
+        <b-form-textarea
           id="input-1"
           v-model="formData.description"
           type="text"
           required
           placeholder="Enter description">
-        </b-form-input>
+        </b-form-textarea>
       </b-form-group>
       <!-- Content -->
       <b-form-group
