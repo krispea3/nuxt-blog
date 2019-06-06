@@ -114,13 +114,16 @@ import axios from 'axios'
     },
     methods: {
       saveForm () {
-        if (!this.post) {
-          this.formData.created = new Date()
-        }
         this.formData.updated = new Date()
         this.formData.author = 'Christian'
 
-        this.$store.dispatch('saveForm', this.formData)
+        if (!this.post) {
+          this.formData.created = new Date()
+          this.$store.dispatch('addPost', this.formData)
+        } else {
+          this.$store.dispatch('updatePost', {formData: this.formData, id: this.$route.params.id})
+        }
+
         this.$router.go(-1)
       },
       onReset(evt) {

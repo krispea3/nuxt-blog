@@ -6,6 +6,7 @@ export const state = () => ({
 
 export const mutations = {
   loadPosts (state, posts) {
+    console.log(posts)
     state.posts = posts
   }
 }
@@ -17,9 +18,7 @@ export const actions = {
         .then(res => {
           const posts = []
           for (const key in res.data) {
-            let post = res.data[key]
-            post.id = key
-            posts.push(post)
+            posts.push({...res.data[key], id: key})
           }
           vuexContext.commit('loadPosts', posts)
         })
@@ -31,7 +30,7 @@ export const actions = {
     //   commit('user', req.session.user)
     // }
   },
-  saveForm (context, formData) {
+  addPost (context, formData) {
     axios.post('https://nuxt-blog-9be94.firebaseio.com/post.json', formData)
       .then(res => {
         console.log(res)
@@ -40,7 +39,19 @@ export const actions = {
       .catch(err => {
         console.log(err)
       })
+  },
+  updatePost (context, payload) {
+    console.log(payload)
+    axios.put('https://nuxt-blog-9be94.firebaseio.com/post/' + payload.id + '.json', payload.formData)
+      .then(res => {
+        console.log(res)
+        // context.commit('reloadBlogData', formData.id)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
+
 }
 
 export const getters = {

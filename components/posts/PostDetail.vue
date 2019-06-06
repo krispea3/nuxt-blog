@@ -10,7 +10,7 @@
           img-width=300px
           img-top>
         <b-card-text>
-          <p>Post ID = {{ post.id }}</p>
+          <p>Post ID = {{ this.$route.params.id }}</p>
           <p>{{ post.content }}</p>
         </b-card-text>
         <b-button @click="goBack" variant="primary">Return</b-button>
