@@ -19,7 +19,7 @@
 <script>
 export default {
   props: {
-    post: Array
+    post: Object
   },
   methods: {
     goBack () {

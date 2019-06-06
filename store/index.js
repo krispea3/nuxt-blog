@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const state = () => ({
   posts: [
     { id: 1, 
@@ -27,6 +29,17 @@ export const actions = {
     const foundIndex = state.posts.findIndex(post => post.id == postId);
     const post = state.posts[foundIndex]
     commit('setPost', post)
+  },
+  saveForm (context, formData) {
+    axios.post('https://nuxt-blog-9be94.firebaseio.com/post.json', formData)
+      .then(res => {
+        console.log(res)
+        // context.commit('reloadBlogData', formData.id)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    
   }
 }
 
