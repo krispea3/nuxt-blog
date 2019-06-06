@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import router from '~router'
 
 export const state = () => ({
   posts: []
@@ -6,9 +7,18 @@ export const state = () => ({
 
 export const mutations = {
   loadPosts (state, posts) {
-    console.log(posts)
     state.posts = posts
+  },
+  addPostToPosts (state, payload) {
+    state.posts.push({...payload.formData, id: payload.id})
+    this.$router.go(-1)
+  },
+  updatePostInPosts (state, payload) {
+    const index = state.posts.findIndex(i => i.id == payload.id)
+    state.posts[index] = {...payload.formData, id: payload.id}
+    this.$router.go(-1)
   }
+
 }
 
 export const actions = {
@@ -33,19 +43,16 @@ export const actions = {
   addPost (context, formData) {
     axios.post('https://nuxt-blog-9be94.firebaseio.com/post.json', formData)
       .then(res => {
-        console.log(res)
-        // context.commit('reloadBlogData', formData.id)
+        context.commit('addPostToPosts', {formData: formData, id: res.data.name})
       })
       .catch(err => {
         console.log(err)
       })
   },
   updatePost (context, payload) {
-    console.log(payload)
     axios.put('https://nuxt-blog-9be94.firebaseio.com/post/' + payload.id + '.json', payload.formData)
       .then(res => {
-        console.log(res)
-        // context.commit('reloadBlogData', formData.id)
+        context.commit('updatePostInPosts', payload)
       })
       .catch(err => {
         console.log(err)

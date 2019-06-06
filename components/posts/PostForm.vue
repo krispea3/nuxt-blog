@@ -123,8 +123,6 @@ import axios from 'axios'
         } else {
           this.$store.dispatch('updatePost', {formData: this.formData, id: this.$route.params.id})
         }
-
-        this.$router.go(-1)
       },
       onReset(evt) {
         evt.preventDefault()
