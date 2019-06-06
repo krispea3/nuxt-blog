@@ -1,15 +1,15 @@
 export const state = () => ({
   posts: [
     { id: 1, 
-      title: 'New Acer Laptop',
-      text: 'Some post text about Acer Laptop',
-      imgUrl: '~@/assets/images/laptop1.jpg',
-      imgAlt: 'laptop'
+      title: 'Latest JS frameworks',
+      content: 'Some text to the first post',
+      imgUrl: 'https://qph.fs.quoracdn.net/main-qimg-bfa9bbf14a4f404c4d6f5c26c4fe4a99-c',
+      imgAlt: 'frameworks'
     },
     { id: 2, 
       title: 'TensorFlow explained',
-      text: 'Some post text for TensorFlow',
-      imgUrl: '~@/assets/images/ai1.jpg',
+      content: 'Some post text for TensorFlow',
+      imgUrl: 'https://thumbs.dreamstime.com/x/abstract-high-tech-background-vector-19785678.jpg',
       imgAlt: 'ai'
     },
   ],
