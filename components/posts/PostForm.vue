@@ -71,6 +71,7 @@
         @click="saveForm" 
         variant="success">
           Save
+          <b-spinner v-if="isSaving" small></b-spinner>
       </b-button>
       <b-button 
         type="reset"
@@ -81,6 +82,7 @@
         @click="deletePost" 
         variant="danger">
           Delete
+        <b-spinner v-if="isDeleting" small></b-spinner>
       </b-button>
       <b-button
         @click="$router.go(-1)">
@@ -108,6 +110,8 @@ import axios from 'axios'
     },
     data() {
       return {
+        isSaving: false,
+        isDeleting: false,
         formData: {
           title: '',
           description: '',
@@ -126,6 +130,7 @@ import axios from 'axios'
     },
     methods: {
       saveForm () {
+        this.isSaving = true
         this.formData.updated = new Date()
         this.formData.author = 'Christian'
 
@@ -148,6 +153,7 @@ import axios from 'axios'
         // })
       },
       deletePost () {
+        this.isDeleting = true
         this.$emit('onDelete')
       }
     }

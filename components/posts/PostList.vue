@@ -33,16 +33,6 @@ export default {
   created () {
     this.posts = this.$store.getters.posts
   },
-  // This is a nuxt lifecycle hook. It will execute on the server and serve the page only once the data is fetched
-  // It only executes on the server the first time it's called. If we navigate away from the page then back, it will
-  // execute on the client.
-  // !!! this.whatever is not available in asyncData. We can use the context instead !!!!
-  // !!! for example we can access the store with context.store or the route with context.route !!!
-  // asyncData shouldn't be used with the normal data method
-  // asyncData (context) {
-  //   console.log(context)
-  //   return {}
-  // },
   data () {
     return {
       posts: []
@@ -56,9 +46,11 @@ export default {
   },
   methods: {
     postDetail (id) {
+      this.isLoading = true
       this.$router.push('posts/' + id)
     },
     postEdit (id) {
+      this.isLoading = true
       this.$router.push('admin/' + id)
     }
   }
