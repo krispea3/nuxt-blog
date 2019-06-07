@@ -19,13 +19,13 @@
         id="input-group-1"
         label="Description"
         label-for="input-1">
-        <b-form-input
+        <b-form-textarea
           id="input-1"
           v-model="formData.description"
           type="text"
           required
           placeholder="Enter description">
-        </b-form-input>
+        </b-form-textarea>
       </b-form-group>
       <!-- Content -->
       <b-form-group
@@ -67,14 +67,28 @@
         </b-form-input>
       </b-form-group>
 
-      <p>{{ post }}</p>
-      <p>{{ formData }}</p>
-      <b-button @click="saveForm" variant="primary">Save</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button 
+        @click="saveForm" 
+        variant="success">
+          Save
+          <b-spinner v-if="isSaving" small></b-spinner>
+      </b-button>
+      <b-button 
+        type="reset"
+        variant="primary">
+          Reset
+      </b-button>
+      <b-button v-if="post" 
+        @click="deletePost" 
+        variant="danger">
+          Delete
+        <b-spinner v-if="isDeleting" small></b-spinner>
+      </b-button>
+      <b-button
+        @click="$router.go(-1)">
+          Cancel
+      </b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ formData }}</pre>
-    </b-card>
   </div>
 </template>
 
@@ -96,6 +110,8 @@ import axios from 'axios'
     },
     data() {
       return {
+        isSaving: false,
+        isDeleting: false,
         formData: {
           title: '',
           description: '',
@@ -114,15 +130,14 @@ import axios from 'axios'
     },
     methods: {
       saveForm () {
-        if (this.post) {
-          this.formData.updated = new Date()
-        } else {
-          this.formData.created = new Date()
-        }
+        this.isSaving = true
+        this.formData.updated = new Date()
         this.formData.author = 'Christian'
 
-        this.$store.dispatch('saveForm', this.formData)
-        this.$router.go(-1)
+        if (!this.post) {
+          this.formData.created = new Date()
+        }
+        this.$emit('onSave', this.formData)
       },
       onReset(evt) {
         evt.preventDefault()
@@ -136,6 +151,10 @@ import axios from 'axios'
         // this.$nextTick(() => {
         //   this.show = true
         // })
+      },
+      deletePost () {
+        this.isDeleting = true
+        this.$emit('onDelete')
       }
     }
       // onSubmit(evt) {
