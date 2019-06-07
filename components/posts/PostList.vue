@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <b-row no-gutters>
     <b-card v-for="post in posts" 
             :key="post.id"
             :title="post.title"

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>Admin page</h1>
-    <hr>
-    <b-container>
-      <PostList :isAdmin="true" />
-    </b-container>
+    <b-row align-h="center">
+    <PostList :isAdmin="true" />
+    </b-row>
+    <b-row align-h="center">
     <b-button @click="addPost" class="mt-3" variant="success">Add post</b-button>
+    </b-row>
   </div>
 </template>
 

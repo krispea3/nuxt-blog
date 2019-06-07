@@ -17,7 +17,12 @@ export const mutations = {
     const index = state.posts.findIndex(i => i.id == payload.id)
     state.posts[index] = {...payload.formData, id: payload.id}
     this.$router.go(-1)
-  }
+  },
+  deletePostInPosts (state, id) {
+    const index = state.posts.findIndex(i => i.id == id)
+    state.posts.splice(index, 1)
+    this.$router.go(-1)
+  },
 
 }
 
@@ -53,6 +58,15 @@ export const actions = {
     axios.put('https://nuxt-blog-9be94.firebaseio.com/post/' + payload.id + '.json', payload.formData)
       .then(res => {
         context.commit('updatePostInPosts', payload)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  deletePost (context, id) {
+    axios.delete('https://nuxt-blog-9be94.firebaseio.com/post/' + id + '.json')
+      .then(res => {
+        context.commit('deletePostInPosts', id)
       })
       .catch(err => {
         console.log(err)

@@ -66,11 +66,9 @@
           placeholder="Enter image alt-tag">
         </b-form-input>
       </b-form-group>
-
-      <p>{{ post }}</p>
-      <p>{{ formData }}</p>
       <b-button @click="saveForm" variant="primary">Save</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="reset">Reset</b-button>
+      <b-button v-if="post" @click="deletePost" variant="danger">Delete</b-button>
     </b-form>
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ formData }}</pre>
@@ -136,6 +134,9 @@ import axios from 'axios'
         // this.$nextTick(() => {
         //   this.show = true
         // })
+      },
+      deletePost () {
+        this.$store.dispatch('deletePost', this.$route.params.id)
       }
     }
       // onSubmit(evt) {
