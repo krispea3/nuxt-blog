@@ -38,7 +38,7 @@ export const actions = {
           vuexContext.commit('loadPosts', posts)
         })
         .catch(err => {
-          context.error(err)
+          return context.error(err)
         })
     )
     // if (req.session.user) {
