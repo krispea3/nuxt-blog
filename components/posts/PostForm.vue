@@ -148,7 +148,7 @@ import axios from 'axios'
         // })
       },
       deletePost () {
-        this.$store.dispatch('deletePost', this.$route.params.id)
+        this.$emit('onDelete')
       }
     }
       // onSubmit(evt) {
