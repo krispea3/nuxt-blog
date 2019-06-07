@@ -13,11 +13,11 @@ export const mutations = {
     state.posts.push({...payload.formData, id: payload.id})
   },
   updatePostInPosts (state, payload) {
-    const index = state.posts.findIndex(i => i.id == payload.id)
+    const index = state.posts.findIndex(i => i.id === payload.id)
     state.posts[index] = {...payload.formData, id: payload.id}
   },
   deletePostInPosts (state, id) {
-    const index = state.posts.findIndex(i => i.id == id)
+    const index = state.posts.findIndex(i => i.id === id)
     state.posts.splice(index, 1)
   },
 
