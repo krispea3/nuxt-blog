@@ -66,13 +66,27 @@
           placeholder="Enter image alt-tag">
         </b-form-input>
       </b-form-group>
-      <b-button @click="saveForm" variant="primary">Save</b-button>
-      <b-button type="reset">Reset</b-button>
-      <b-button v-if="post" @click="deletePost" variant="danger">Delete</b-button>
+
+      <b-button 
+        @click="saveForm" 
+        variant="success">
+          Save
+      </b-button>
+      <b-button 
+        type="reset"
+        variant="primary">
+          Reset
+      </b-button>
+      <b-button v-if="post" 
+        @click="deletePost" 
+        variant="danger">
+          Delete
+      </b-button>
+      <b-button
+        @click="$router.go(-1)">
+          Cancel
+      </b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ formData }}</pre>
-    </b-card>
   </div>
 </template>
 
