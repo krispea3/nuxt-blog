@@ -1,5 +1,5 @@
 <template>
-  <PostForm :post="loadedPost" />
+  <PostForm @onSave="onSave" :post="loadedPost" />
 </template>
 
 <script>
@@ -20,6 +20,11 @@ export default {
   },
   components: {
     PostForm
+  },
+  methods: {
+    onSave (formData) {
+      this.$store.dispatch('updatePost', {formData: formData, id: this.$route.params.id})
+    }
   }
 }
 </script>

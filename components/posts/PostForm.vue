@@ -131,10 +131,8 @@ import axios from 'axios'
 
         if (!this.post) {
           this.formData.created = new Date()
-          this.$store.dispatch('addPost', this.formData)
-        } else {
-          this.$store.dispatch('updatePost', {formData: this.formData, id: this.$route.params.id})
         }
+        this.$emit('onSave', this.formData)
       },
       onReset(evt) {
         evt.preventDefault()
