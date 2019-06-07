@@ -1,23 +1,25 @@
 <template>
   <b-row no-gutters>
-    <b-card v-for="post in posts" 
+    <b-card v-for="(post, index) in posts" 
             :key="post.id"
             :title="post.title"
             :sub-title="post.description"
             class="mb-2 mr-2">
 
       <b-button v-if="!isAdmin"
-        @click="postDetail(post.id)" 
+        @click="postDetail(post.id, index)" 
         variant="primary"
         size="sm">
           View
+        <b-spinner v-if="isLoading.includes(index)" small></b-spinner>
       </b-button>
 
       <b-button v-if="isAdmin"
-        @click="postEdit(post.id)" 
+        @click="postEdit(post.id, index)" 
         variant="success"
         size="sm">
           Edit
+        <b-spinner v-if="isLoading.includes(index)" small></b-spinner>
       </b-button>
 
       <div slot="footer">
@@ -35,6 +37,7 @@ export default {
   },
   data () {
     return {
+      isLoading: [],
       posts: []
     }
   },
@@ -45,12 +48,12 @@ export default {
     }
   },
   methods: {
-    postDetail (id) {
-      this.isLoading = true
+    postDetail (id, index) {
+      this.isLoading.push(index)
       this.$router.push('posts/' + id)
     },
-    postEdit (id) {
-      this.isLoading = true
+    postEdit (id, index) {
+      this.isLoading.push(index)
       this.$router.push('admin/' + id)
     }
   }
