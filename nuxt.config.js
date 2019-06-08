@@ -25,8 +25,17 @@ export default {
 
   /*
   ** Customize the progress-bar color
+  // We also can adjust the height and the duration. When the page load is faster then the bar will disappear
   */
-  loading: { color: '#fff' },
+  loading: { color: '#6b8e23', height: '4px', duration: "5000" },
+  // to desable progress-bar just put
+  // loading: false
+
+  // loadingIndicator shows a spinner on load. Only works in SPA mode not UNIVERSAL
+  // loadingIndicator: {
+  //   name: 'circle',
+  //   color: '6b8e23'
+  // }
 
   /*
   ** Global CSS
