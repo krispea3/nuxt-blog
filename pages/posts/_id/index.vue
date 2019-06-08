@@ -26,10 +26,7 @@ export default {
   components: {
     PostDetail
   },
-  // computed: {
-  //   post () {
-  //     return this.$store.getters.post
-  //   }
-  // }
+  // Here we overwrite the head in nuxt.config.js. Only works in route pages
+  head: {title: 'Blog Post detail'}
 }
 </script>

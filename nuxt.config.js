@@ -7,6 +7,8 @@ export default {
   ** Headers of the page
   */
   head: {
+    // We also can add head-tags in page-components. Just add head: {objectId: value}
+    // Add it in script export default
     title: 'Tech-Blog',
     meta: [
       { charset: 'utf-8' },
