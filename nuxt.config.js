@@ -45,9 +45,13 @@ export default {
   ],
 
   /*
-  ** Plugins to load before mounting the App
+  ** Plugins to load before mounting the App. 
+  // It replaces the main.js app of normal vue-apps in nuxt
+  // It can run any javascript code at application start
   */
   plugins: [
+    '~plugins/core-components.js',
+    '~plugins/date-filter.js'
   ],
 
   /*
@@ -82,7 +86,7 @@ export default {
   },
   // Here we can define general transitions on route change. The css for it is in ~assets/styles/main.css
   // See CSS section above to include it into nuxt
-  transition: {
+  pageTransition: {
     name: 'fade',
     mode: 'out-in'
   }

@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import PostList from '~/components/posts/PostList'
+// no need import anymore as it is defined in plugins
+// import PostList from '~/components/posts/PostList'
 
 export default {
   data () {
@@ -35,9 +36,10 @@ export default {
       isAdmin: false
     }
   },
-  components: {
-    PostList
-  }
+  // No need to declare the component as it is defined in plugins
+  // components: {
+  //   PostList
+  // }
 }
 </script>
 

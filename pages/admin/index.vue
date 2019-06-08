@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import PostList from '~/components/posts/PostList'
+// no need import anymore as it is defined in plugins
+// import PostList from '~/components/posts/PostList'
 
 export default {
   data () {
@@ -18,9 +19,10 @@ export default {
       isAdmin: true
     }
   },
-  components: {
-    PostList
-  },
+  // No need to declare the component as it is defined in plugins
+  // components: {
+  //   PostList
+  // },
   methods: {
     addPost () {
       this.$router.push('admin/newPost')

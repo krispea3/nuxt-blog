@@ -23,7 +23,7 @@
       </b-button>
 
       <div slot="footer">
-        <small class="text-muted">Last updated on {{ post.updated }} by {{ post.author }}</small>
+        <small class="text-muted">Last updated on {{ post.updated | date }} by {{ post.author }}</small>
       </div>
     </b-card>
   </b-row>
