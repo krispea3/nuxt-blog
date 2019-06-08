@@ -72,6 +72,7 @@ export default {
   axios: {
     // Here we can define the global config of axios
     baseURL: process.env.BASE_URL || 'https://nuxt-blog-9be94.firebaseio.com',
+    // Must be set to false when using REST API. This avoids sending cookies and other things
     credentials: false
     // proxyHeaders: false
   },
