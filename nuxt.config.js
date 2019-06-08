@@ -55,7 +55,7 @@ export default {
   ],
 
   /*
-  ** Nuxt.js modules: 
+  ** Nuxt.js modules:::
   ** Docs at https://nuxtjs.org/guide/modules or https://github.com/nuxt-community/awesome-nuxt#modules
   // Registering modules written by third party.
   */
