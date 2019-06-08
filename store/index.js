@@ -26,7 +26,7 @@ export const mutations = {
 export const actions = {
   nuxtServerInit (vuexContext, context) {
     return (
-      axios.get('https://nuxt-blog-9be94.firebaseio.com/post.json')
+      axios.get(process.env.baseURL + '/post.json')
         .then(res => {
           const posts = []
           for (const key in res.data) {
@@ -44,7 +44,7 @@ export const actions = {
   },
   addPost (context, formData) {
     return (
-      axios.post('https://nuxt-blog-9be94.firebaseio.com/post.json', formData)
+      axios.post(process.env.baseURL + '/post.json', formData)
         .then(res => {
           context.commit('addPostToPosts', {formData: formData, id: res.data.name})
         })
@@ -55,7 +55,7 @@ export const actions = {
   },
   updatePost (context, payload) {
     return (
-      axios.put('https://nuxt-blog-9be94.firebaseio.com/post/' + payload.id + '.json', payload.formData)
+      axios.put(process.env.baseURL + '/post/' + payload.id + '.json', payload.formData)
         .then(res => {
           context.commit('updatePostInPosts', payload)
         })
@@ -66,7 +66,7 @@ export const actions = {
   },
   deletePost (context, id) {
     return (
-      axios.delete('https://nuxt-blog-9be94.firebaseio.com/post/' + id + '.json')
+      axios.delete(process.env.baseURL + '/post/' + id + '.json')
         .then(res => {
           context.commit('deletePostInPosts', id)
         })

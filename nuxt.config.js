@@ -68,4 +68,14 @@ export default {
     extend(config, ctx) {
     }
   },
-}
+
+  // Additional settings. Not displayed at creation of nux.config.js
+    // Set environment variables
+  env: {
+    // Here we set the baseURL environment variable. If the server it's running on has one in process.env
+    // It will take that. If it's not set it will take the hardcode one
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9be94.firebaseio.com'
+  }
+
+
+  }
