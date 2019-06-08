@@ -1,6 +1,3 @@
-import axios from 'axios'
-// import router from '~router'
-
 export const state = () => ({
   posts: []
 })
@@ -26,11 +23,11 @@ export const mutations = {
 export const actions = {
   nuxtServerInit (vuexContext, context) {
     return (
-      axios.get(process.env.baseURL + '/post.json')
-        .then(res => {
+      context.app.$axios.$get('/post.json')
+        .then(data => {
           const posts = []
-          for (const key in res.data) {
-            posts.push({...res.data[key], id: key})
+          for (const key in data) {
+            posts.push({...data[key], id: key})
           }
           vuexContext.commit('loadPosts', posts)
         })
@@ -44,9 +41,9 @@ export const actions = {
   },
   addPost (context, formData) {
     return (
-      axios.post(process.env.baseURL + '/post.json', formData)
-        .then(res => {
-          context.commit('addPostToPosts', {formData: formData, id: res.data.name})
+      this.$axios.$post('/post.json', formData)
+        .then(data => {
+          context.commit('addPostToPosts', {formData: formData, id: data.name})
         })
         .catch(err => {
           return console.log(err)
@@ -55,8 +52,8 @@ export const actions = {
   },
   updatePost (context, payload) {
     return (
-      axios.put(process.env.baseURL + '/post/' + payload.id + '.json', payload.formData)
-        .then(res => {
+      this.$axios.$put('/post/' + payload.id + '.json', payload.formData)
+        .then(data => {
           context.commit('updatePostInPosts', payload)
         })
         .catch(err => {
@@ -66,8 +63,8 @@ export const actions = {
   },
   deletePost (context, id) {
     return (
-      axios.delete(process.env.baseURL + '/post/' + id + '.json')
-        .then(res => {
+      this.$axios.$delete('/post/' + id + '.json')
+        .then(data => {
           context.commit('deletePostInPosts', id)
         })
         .catch(err => {

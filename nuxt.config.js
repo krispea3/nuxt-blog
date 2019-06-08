@@ -55,12 +55,26 @@ export default {
   ],
 
   /*
-  ** Nuxt.js modules
+  ** Nuxt.js modules: 
+  ** Docs at https://nuxtjs.org/guide/modules or https://github.com/nuxt-community/awesome-nuxt#modules
+  // Registering modules written by third party.
   */
   modules: [
     // Doc: https://bootstrap-vue.js.org/docs/
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    // Doc: https://github.com/nuxt-community/axios-module
+    '@nuxtjs/axios'
   ],
+  // Made available through modules. No need to import axios anymore
+  // Access it with:
+  //  For asyncData and nuxtServerInit: - context.app.$axios.$get 
+  //  For Store methods:                - this.$axios.$get  
+  axios: {
+    // Here we can define the global config of axios
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9be94.firebaseio.com',
+    credentials: false
+    // proxyHeaders: false
+  },
 
   /*
   ** Build configuration

@@ -4,7 +4,8 @@
 
 <script>
 import PostDetail from '~/components/posts/PostDetail'
-import axios from 'axios'
+// No need import anymore. It is defined in nuxt.config modules
+// import axios from 'axios'
 
 export default {
   // created () {
@@ -12,10 +13,10 @@ export default {
   // },
   asyncData (context) {
     return (
-      axios.get(process.env.baseURL + '/post/' + context.params.id + '.json')
-        .then(res => {
+      context.app.$axios.$get('/post/' + context.params.id + '.json')
+        .then(data => {
           return {
-            loadedPost: res.data
+            loadedPost: data
           }
         })
         .catch(err => {
