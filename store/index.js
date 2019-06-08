@@ -49,7 +49,7 @@ export const actions = {
           context.commit('addPostToPosts', {formData: formData, id: res.data.name})
         })
         .catch(err => {
-          console.log(err)
+          return console.log(err)
         })
     )
   },
@@ -60,7 +60,7 @@ export const actions = {
           context.commit('updatePostInPosts', payload)
         })
         .catch(err => {
-          console.log(err)
+          return console.log(err)
         })
     )
   },
@@ -71,7 +71,7 @@ export const actions = {
           context.commit('deletePostInPosts', id)
         })
         .catch(err => {
-          console.log(err)
+           return console.log(err)
         })
     )
   }

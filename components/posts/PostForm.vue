@@ -130,7 +130,6 @@ import axios from 'axios'
     },
     methods: {
       saveForm () {
-        console.log(this.post.id)
         this.isSaving = true
         this.formData.updated = new Date()
         this.formData.author = 'Christian'

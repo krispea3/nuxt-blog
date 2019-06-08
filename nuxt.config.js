@@ -75,7 +75,15 @@ export default {
     // Here we set the baseURL environment variable. If the server it's running on has one in process.env
     // It will take that. If it's not set it will take the hardcode one
     baseURL: process.env.BASE_URL || 'https://nuxt-blog-9be94.firebaseio.com'
-  }
+  },
+  // in router we can override all attributes of the router contructor
+  route: {
 
-
+  },
+  // Here we can define general transitions on route change. The css for it is in ~assets/styles/main.css
+  // See CSS section above to include it into nuxt
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
   }
+}
