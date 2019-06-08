@@ -4,7 +4,8 @@
 
 <script>
 import PostDetail from '~/components/posts/PostDetail'
-import axios from 'axios'
+// No need import anymore. It is defined in nuxt.config modules
+// import axios from 'axios'
 
 export default {
   // created () {
@@ -12,10 +13,10 @@ export default {
   // },
   asyncData (context) {
     return (
-      axios.get('https://nuxt-blog-9be94.firebaseio.com/post/' + context.params.id + '.json')
-        .then(res => {
+      context.app.$axios.$get('/post/' + context.params.id + '.json')
+        .then(data => {
           return {
-            loadedPost: res.data
+            loadedPost: data
           }
         })
         .catch(err => {
@@ -26,10 +27,7 @@ export default {
   components: {
     PostDetail
   },
-  // computed: {
-  //   post () {
-  //     return this.$store.getters.post
-  //   }
-  // }
+  // Here we overwrite the head in nuxt.config.js. Only works in route pages
+  head: {title: 'Blog Post detail'}
 }
 </script>

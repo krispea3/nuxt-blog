@@ -11,7 +11,7 @@
         variant="primary"
         size="sm">
           View
-        <b-spinner v-if="isLoading.includes(index)" small></b-spinner>
+        <b-spinner v-if="isLoading.includes(post.id)" small></b-spinner>
       </b-button>
 
       <b-button v-if="isAdmin"
@@ -19,11 +19,11 @@
         variant="success"
         size="sm">
           Edit
-        <b-spinner v-if="isLoading.includes(index)" small></b-spinner>
+        <b-spinner v-if="isLoading.includes(post.id)" small></b-spinner>
       </b-button>
 
       <div slot="footer">
-        <small class="text-muted">Last updated on {{ post.updated }} by {{ post.author }}</small>
+        <small class="text-muted">Last updated on {{ post.updated | date }} by {{ post.author }}</small>
       </div>
     </b-card>
   </b-row>
@@ -48,12 +48,12 @@ export default {
     }
   },
   methods: {
-    postDetail (id, index) {
-      this.isLoading.push(index)
+    postDetail (id) {
+      this.isLoading.push(id)
       this.$router.push('posts/' + id)
     },
-    postEdit (id, index) {
-      this.isLoading.push(index)
+    postEdit (id) {
+      this.isLoading.push(id)
       this.$router.push('admin/' + id)
     }
   }
