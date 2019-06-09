@@ -1,5 +1,9 @@
 <template>
-  <PostDetail :post="loadedPost" :isAdmin="false" :isPreview="false" />
+  <b-row align-h="center">
+    <b-col col sm="12" md="10">
+      <PostDetail :post="loadedPost" :isAdmin="false" :isPreview="false" />
+    </b-col>
+  </b-row>
 </template>
 
 <script>

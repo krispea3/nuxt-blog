@@ -1,11 +1,10 @@
 <template>
-      <b-card>
+      <b-card class="mb-3 text-center">
 
         <b-card-img v-if="!isPreview"
           :src="post.imgUrl" 
           :alt="post.imgAlt"
-          height="350px"
-          width=300px>
+          img-top>
         </b-card-img>
 
         <b-card-title
@@ -13,13 +12,15 @@
         </b-card-title>
 
         <b-card-sub-title
+          class="mb-2"
           :sub-title="post.description">
         </b-card-sub-title>
 
-        <b-card-text v-if="!isPreview">
+        <b-card-text v-if="!isPreview" class="text-left">
           <p>{{ post.content }}</p>
         </b-card-text>
 
+        <div class="mt-3">
         <b-button v-if="!isPreview"
           @click="goBack" 
           variant="primary">
@@ -41,7 +42,7 @@
             Edit
           <b-spinner v-if="isLoading.includes(post.id)" small></b-spinner>
         </b-button>
-
+        </div>
         
         <div slot="footer">
           <small class="text-muted">Last updated on {{ post.updated | date }} by {{ post.author }}</small>
@@ -82,3 +83,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .card-img {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+</style>

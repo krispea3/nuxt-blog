@@ -1,17 +1,33 @@
 <template>
-  <b-row no-gutters>
-    <b-card-group deck>
-    <div  v-for="post in posts" :key="post.id">
-      <b-col>
-      <PostDetail
-        :isPreview="true" 
-        :isAdmin="isAdmin" 
-        :post="post">
-      </PostDetail>
-      </b-col>
+  <div>
+    <div v-if="displayType != 'list'">
+      <b-row no-gutters align-h="center">
+        <b-card-group deck>
+        <div  v-for="post in posts" :key="post.id">
+          <PostDetail
+            :isPreview="true" 
+            :isAdmin="isAdmin" 
+            :post="post">
+          </PostDetail>
+        </div>
+        </b-card-group>
+      </b-row>
     </div>
-    </b-card-group>
-  </b-row>
+
+    <div v-else>
+        <div  v-for="post in posts" :key="post.id">
+          <b-row no-gutters align-h="center">
+            <b-col cols="10">
+            <PostDetail
+              :isPreview="true" 
+              :isAdmin="isAdmin" 
+              :post="post">
+            </PostDetail>
+            </b-col>
+          </b-row>
+        </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -34,6 +50,10 @@ export default {
     isAdmin: {
       type: Boolean,
       required: true
+    },
+    displayType: {
+      type: String,
+      required: false
     }
   }
 }
