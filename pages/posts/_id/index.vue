@@ -1,5 +1,5 @@
 <template>
-  <PostDetail :post="loadedPost" />
+  <PostDetail :post="loadedPost" :isAdmin="false" :isPreview="false" />
 </template>
 
 <script>

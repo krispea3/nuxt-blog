@@ -1,9 +1,5 @@
 <template>
-  <b-container>
-      <b-card-group>
-        <PostList :isAdmin="false"/>
-      </b-card-group>
-  </b-container>
+    <PostList :isAdmin="false" :isPreview="true"/>
 </template>
 
 <script>

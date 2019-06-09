@@ -12,17 +12,8 @@
           <b-button class="ml-3" variant="primary" href="#">Register</b-button>
         </b-jumbotron>
       </b-col>
-  </b-row>
-
-  <!-- <b-row align-h="center">
-    <b-col cols="10" > -->
-  <b-container>
-    <b-card-group>
-      <PostList :isAdmin="isAdmin" />
-    </b-card-group>      
-  </b-container>
-    <!-- </b-col>
-  </b-row> -->
+    </b-row>
+    <PostList :isAdmin="isAdmin" />
   </div>  
 </template>
 

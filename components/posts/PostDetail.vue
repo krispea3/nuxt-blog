@@ -1,5 +1,5 @@
 <template>
-      <b-card no-body>
+      <b-card>
 
         <b-card-img v-if="!isPreview"
           :src="post.imgUrl" 
@@ -17,18 +17,17 @@
         </b-card-sub-title>
 
         <b-card-text v-if="!isPreview">
-          <p>Post ID = {{ this.$route.params.id }}</p>
           <p>{{ post.content }}</p>
         </b-card-text>
 
-        <b-button 
+        <b-button v-if="!isPreview"
           @click="goBack" 
           variant="primary">
             Return
         </b-button>
 
-        <b-button v-if="!isAdmin"
-          @click="postDetail(post.id, index)" 
+        <b-button v-if="!isAdmin & isPreview"
+          @click="postDetail(post.id)" 
           variant="primary"
           size="sm">
             View
@@ -36,7 +35,7 @@
         </b-button>
 
         <b-button v-if="isAdmin"
-          @click="postEdit(post.id, index)" 
+          @click="postEdit(post.id)" 
           variant="success"
           size="sm">
             Edit
@@ -52,6 +51,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      isLoading: [],
+    }
+  },
   props: {
     post: Object,
     isAdmin: {
@@ -64,6 +68,14 @@ export default {
     }
   },
   methods: {
+    postDetail (id) {
+      this.isLoading.push(id)
+      this.$router.push('posts/' + id)
+    },
+    postEdit (id) {
+      this.isLoading.push(id)
+      this.$router.push('admin/' + id)
+    },
     goBack () {
       this.$router.go(-1)
     }

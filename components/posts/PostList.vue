@@ -1,10 +1,22 @@
 <template>
   <b-row no-gutters>
-    
+    <b-card-group deck>
+    <div  v-for="post in posts" :key="post.id">
+      <b-col>
+      <PostDetail
+        :isPreview="true" 
+        :isAdmin="isAdmin" 
+        :post="post">
+      </PostDetail>
+      </b-col>
+    </div>
+    </b-card-group>
   </b-row>
 </template>
 
 <script>
+import PostDetail from './PostDetail'
+
 export default {
   // This vue lifecycle hook executes on the client
   created () {
@@ -12,24 +24,16 @@ export default {
   },
   data () {
     return {
-      isLoading: [],
       posts: []
     }
+  },
+  components: {
+    PostDetail
   },
   props: {
     isAdmin: {
       type: Boolean,
       required: true
-    }
-  },
-  methods: {
-    postDetail (id) {
-      this.isLoading.push(id)
-      this.$router.push('posts/' + id)
-    },
-    postEdit (id) {
-      this.isLoading.push(id)
-      this.$router.push('admin/' + id)
     }
   }
 }
