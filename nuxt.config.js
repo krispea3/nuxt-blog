@@ -1,4 +1,3 @@
-// Description from master
 import pkg from './package'
 // Another description from branch middlewareAndAuth
 export default {
