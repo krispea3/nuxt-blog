@@ -1,4 +1,3 @@
-// Description from master
 import pkg from './package'
 
 export default {
