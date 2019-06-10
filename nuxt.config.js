@@ -1,5 +1,5 @@
 import pkg from './package'
-
+// Another description from branch middlewareAndAuth
 export default {
   mode: 'universal',
 
