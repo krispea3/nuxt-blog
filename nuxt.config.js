@@ -98,6 +98,11 @@ export default {
   route: {
 
   },
+  // Router to run the middleware for all routes. 
+  // middleware takes a string with filename without extension and without path
+  router: {
+    middleware: 'log'
+  },
   // Here we can define general transitions on route change. The css for it is in ~assets/styles/main.css
   // See CSS section above to include it into nuxt
   pageTransition: {
