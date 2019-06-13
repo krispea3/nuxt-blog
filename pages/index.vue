@@ -8,8 +8,8 @@
             align="center"
             class="bg-image">
           <p>To get all the articles, register now! Or login if you are already a member</p>
-          <b-button variant="success" href="#">Login</b-button>
-          <b-button class="ml-3" variant="primary" href="#">Register</b-button>
+          <b-button @click="login" variant="success" href="#">Login</b-button>
+          <b-button @click="register" class="ml-3" variant="primary" href="#">Register</b-button>
         </b-jumbotron>
       </b-col>
     </b-row>
@@ -27,6 +27,16 @@ export default {
       isAdmin: false
     }
   },
+  methods: {
+    login () {
+      const isLogin = true
+      this.$router.push('/auth', isLogin)
+    },
+    register () {
+      const isLogin = false
+      this.$router.push('/auth', isLogin)
+    }
+  }
   // No need to declare the component as it is defined in plugins
   // components: {
   //   PostList
