@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div> -->
     <b-form>
       <b-form-group
         id="input-group-1"
@@ -27,27 +27,28 @@
           placeholder="Enter password">
         </b-form-input>
       </b-form-group>
-
-      <b-button v-if="isLogin" variant="success">Login</b-button>
-      <b-button v-else variant="success">Register</b-button>
+        <b-button v-if="isLogin" variant="success">Login</b-button>
+        <b-button v-else variant="success">Register</b-button>
     </b-form>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
 export default {
+  created () {
+    if (this.$route.query.isLogin === 'true') {
+      this.isLogin = true
+    } else {
+      this.isLogin = false
+    }
+  },
   data () {
     return {
       form: {
         email: '',
         password: ''
-      }
-    }
-  },
-  props: {
-    isLogin: {
-    type: Boolean,
-    required: false
+      },
+      isLogin: false
     }
   }
 }

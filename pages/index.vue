@@ -30,11 +30,11 @@ export default {
   methods: {
     login () {
       const isLogin = true
-      this.$router.push('/auth', isLogin)
+      this.$router.push('/auth?isLogin=true')
     },
     register () {
       const isLogin = false
-      this.$router.push('/auth', isLogin)
+      this.$router.push('/auth?isLogin=false')
     }
   }
   // No need to declare the component as it is defined in plugins
