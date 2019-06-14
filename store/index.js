@@ -1,5 +1,7 @@
 export const state = () => ({
-  posts: []
+  posts: [],
+  user: '',
+  idToken: null
 })
 
 export const mutations = {
@@ -17,6 +19,23 @@ export const mutations = {
     const index = state.posts.findIndex(i => i.id === id)
     state.posts.splice(index, 1)
   },
+  login (state, user) {
+    state.user = user.email
+    state.idToken = user.idToken
+    localStorage.setItem('token', user.idToken)
+    localStorage.setItem('user', user.email)
+
+    const now = new Date()
+    const expirationDate = new Date(now.getTime() + user.expiresIn * 1000)
+    localStorage.setItem('expiresOn', expirationDate)
+  },
+  logout (state) {
+    state.user = ''
+    state.idToken = null,
+    localStorage.setItem('token', null)
+    localStorage.setItem('user', null)
+    localStorage.setItem('expiresOn', null)
+  }
 
 }
 
@@ -71,6 +90,35 @@ export const actions = {
            return console.log(err)
         })
     )
+  },
+  register ({ commit }, formData) {
+    return (
+      this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyC7ItGWr8uZpRAHrGC8_qztVg8QxMulzZE', {
+        email: formData.email, 
+        password: formData.password, 
+        returnSecureToken: true
+      })
+        .then( data => {
+          commit('login', {email: formData.email, idToken: data.idToken, expiresIn: data.expiresIn})
+        })
+        .catch(err => console.log(err))
+    )
+  },
+  login ({ commit }, formData) {
+    return (
+      this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyC7ItGWr8uZpRAHrGC8_qztVg8QxMulzZE', {
+        email: formData.email, 
+        password: formData.password, 
+        returnSecureToken: true
+      })
+        .then( data => {
+          commit('login', {email: formData.email, idToken: data.idToken, expiresIn: data.expiresIn})
+        })
+        .catch(err => console.log(err))
+    )
+  },
+  logout ({ commit }) {
+    commit('logout')
   }
 
 }
@@ -81,5 +129,8 @@ export const getters = {
   },
   post (state) {
     return state.post
+  },
+  user (state) {
+    return state.user
   }
 }

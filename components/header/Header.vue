@@ -12,8 +12,33 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-nav-item to="/admin">Admin</b-nav-item>
+        <b-nav-item-dropdown v-if="user"
+          id="my-nav-dropdown"
+          :text="user"
+          toggle-class="nav-link-custom"
+          right
+        >
+          <b-dropdown-item @click="logout">Logout</b-dropdown-item>
+          <!-- <b-dropdown-divider></b-dropdown-divider> -->
+      </b-nav-item-dropdown>
+
+        <b-nav-item v-if="user" to="/admin">Admin</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
+
+<script>
+export default {
+  computed: {
+    user () {
+      return this.$store.getters.user
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+    }
+  }
+}
+</script>

@@ -27,8 +27,8 @@
           placeholder="Enter password">
         </b-form-input>
       </b-form-group>
-        <b-button v-if="isLogin" variant="success">Login</b-button>
-        <b-button v-else variant="success">Register</b-button>
+        <b-button v-if="isLogin" @click="login" variant="success">Login</b-button>
+        <b-button v-else @click="register" variant="success">Register</b-button>
     </b-form>
   <!-- </div> -->
 </template>
@@ -50,6 +50,20 @@ export default {
       },
       isLogin: false
     }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('login', this.form)
+        .then( () => {
+          this.$router.go(-1)
+        })
+    },
+    register () {
+      this.$store.dispatch('register', this.form)
+        .then( () => {
+          this.$router.go(-1)
+        })
+    },
   }
 }
 </script>
