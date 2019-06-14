@@ -31,12 +31,12 @@ export const mutations = {
   },
   logout (state) {
     state.user = ''
-    state.idToken = null,
-    localStorage.setItem('token', null)
-    localStorage.setItem('user', null)
-    localStorage.setItem('expiresOn', null)
+    state.idToken = null
+  },
+  loadUser (state, userData) {
+    state.idToken = userData.token
+    state.user = userData.user
   }
-
 }
 
 export const actions = {
@@ -118,7 +118,23 @@ export const actions = {
     )
   },
   logout ({ commit }) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('expiresOn')
     commit('logout')
+  },
+  tryAutoLogin ({ commit }) {
+    // If no token abort
+    if (!localStorage.token) {
+      return
+    }
+    // If token expired abort
+    const now = new Date()
+    if (now > localStorage.expiresOn) {
+      return
+    }
+
+    commit('loadUser', {user: localStorage.user, token: localStorage.token})
   }
 
 }
