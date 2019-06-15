@@ -85,7 +85,7 @@ export const actions = {
         })
     )
   },
-  register ({ commit }, formData) {
+  register ({ commit, dispatch }, formData) {
     return (
       this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyC7ItGWr8uZpRAHrGC8_qztVg8QxMulzZE', {
         email: formData.email, 
@@ -98,13 +98,13 @@ export const actions = {
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
-      
           commit('login', {email: formData.email, idToken: data.idToken})
+          dispatch('setAulologout', data.expiresIn)
         })
         .catch(err => console.log(err))
     )
   },
-  login ({ commit }, formData) {
+  login ({ commit, dispatch }, formData) {
     return (
       this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyC7ItGWr8uZpRAHrGC8_qztVg8QxMulzZE', {
         email: formData.email, 
@@ -118,6 +118,7 @@ export const actions = {
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
           commit('login', {email: formData.email, idToken: data.idToken})
+          dispatch('setAutologout', data.expiresIn)
         })
         .catch(err => console.log(err))
     )
@@ -127,6 +128,12 @@ export const actions = {
     localStorage.removeItem('user')
     localStorage.removeItem('expiresOn')
     commit('logout')
+  },
+  setAutologout ({ dispatch }, duration) {
+    setTimeout(()=>{
+      dispatch('logout')
+      alert("Your session has expired! Login again")
+    }, duration)
   },
   tryAutoLogin ({ commit }) {
     // If no token abort
