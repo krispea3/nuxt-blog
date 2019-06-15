@@ -1,5 +1,4 @@
 <template>
-  <!-- <div> -->
     <b-form>
       <b-form-group v-if="!isLogin"
         id="input-group-1"
@@ -53,10 +52,12 @@
           placeholder="Enter password">
         </b-form-input>
       </b-form-group>
-        <b-button v-if="isLogin" @click="login" variant="success">Login</b-button>
-        <b-button v-else @click="register" variant="success">Register</b-button>
+
+      <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
+
+      <b-button v-if="isLogin" @click="login" variant="success">Login</b-button>
+      <b-button v-else @click="register" variant="success">Register</b-button>
     </b-form>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -79,11 +80,18 @@ export default {
       isLogin: false
     }
   },
+  computed: {
+    error () {
+      return this.$store.getters.userError
+    }
+  },
   methods: {
     login () {
       this.$store.dispatch('login', this.form)
         .then( () => {
-          this.$router.go(-1)
+          if (!this.$store.getters.userError) {
+            this.$router.go(-1)
+          }
         })
     },
     register () {

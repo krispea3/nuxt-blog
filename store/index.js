@@ -1,6 +1,8 @@
 export const state = () => ({
   posts: [],
   user: {},
+  userError: '',
+  postError: ''
 })
 
 export const mutations = {
@@ -26,7 +28,14 @@ export const mutations = {
   },
   loadUser (state, user) {
     state.user = user
+  },
+  setUserError (state, msg) {
+    state.userError = msg
+  },
+  setPostError (state, msg) {
+    state.postError = msg
   }
+
 }
 
 export const actions = {
@@ -49,10 +58,11 @@ export const actions = {
     return (
       this.$axios.$post('/post.json' + '?auth=' + state.user.idToken, formData)
         .then(data => {
+          commit('setPostError', '')
           commit('addPostToPosts', {formData: formData, id: data.name})
         })
         .catch(err => {
-          return console.log(err)
+          commit('setPostError', 'Cannot add post. Try again later')
         })
     )
   },
@@ -60,10 +70,11 @@ export const actions = {
     return (
       this.$axios.$put('/post/' + payload.id + '.json' + '?auth=' + state.user.idToken, payload.formData)
         .then(data => {
+          commit('setPostError', '')
           commit('updatePostInPosts', payload)
         })
         .catch(err => {
-          return console.log(err)
+          commit('setPostError', 'Cannot update post. Please try again later')
         })
     )
   },
@@ -71,10 +82,11 @@ export const actions = {
     return (
       this.$axios.$delete('/post/' + id + '.json' + '?auth=' + state.user.idToken)
         .then(data => {
+          commit('setPostError', '')
           commit('deletePostInPosts', id)
         })
         .catch(err => {
-           return console.log(err)
+          commit('setPostError', 'Error deleting the post. Try again later')
         })
     )
   },
@@ -105,11 +117,14 @@ export const actions = {
             surName: formData.surName,
             email: formData.email,
             idToken: data.idToken
-          }  
+          }
+          commit('setUserError', '') 
           commit('login', user)
           dispatch('setAutologout', data.expiresIn * 1000)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          commit('setUserError', 'Cannot login the user, try again later')
+        })
     )
   },
   login ({ commit, dispatch }, formData) {
@@ -126,7 +141,7 @@ export const actions = {
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
-
+          commit('setUserError', '')
           // Read user data on firebase
               // Not working, returns 400 error. Bad request. Need help
               // this.$axios.$get('/users.json?orderBy"email"&equalTo=formData.email')
@@ -144,11 +159,14 @@ export const actions = {
                 }
               }
               commit('login', user)
+              commit('setUserError', '')
               dispatch('setAutologout', wrkExpiresIn * 1000)
             })
             .catch(err => console.log(err))
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          commit('setUserError', 'Invalid email or password')
+        })
     )
   },
   logout ({ commit }) {
@@ -156,6 +174,7 @@ export const actions = {
     localStorage.removeItem('user')
     localStorage.removeItem('expiresOn')
     commit('logout')
+    this.$router.push('/')
   },
   setAutologout ({ dispatch }, duration) {
     setTimeout(()=>{
@@ -208,5 +227,12 @@ export const getters = {
   },
   user (state) {
     return state.user
+  },
+  userError (state) {
+    return state.userError
+  },
+  postError (state) {
+    return state.postError
   }
+
 }

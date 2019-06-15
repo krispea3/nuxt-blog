@@ -67,6 +67,8 @@
         </b-form-input>
       </b-form-group>
 
+      <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
+
       <b-button 
         @click="saveForm" 
         variant="success">
@@ -123,8 +125,11 @@
       }
     },
     props: {
-      post: Object,
-      required: false
+      post: {
+        type: Object,
+        required: false
+      },
+      error: String
     },
     methods: {
       saveForm () {
