@@ -38,6 +38,7 @@
           required
           placeholder="Enter email">
         </b-form-input>
+        {{ $v }}
       </b-form-group>
 
       <b-form-group
@@ -71,6 +72,8 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
+
 export default {
   created () {
     if (this.$route.query.isLogin === 'true') {
@@ -89,6 +92,12 @@ export default {
       },
       isLogin: false,
       isLoading: false
+    }
+  },
+  validations: {
+    email: {
+      required,
+
     }
   },
   computed: {

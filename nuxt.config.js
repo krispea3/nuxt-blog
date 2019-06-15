@@ -50,7 +50,8 @@ export default {
   */
   plugins: [
     '~plugins/core-components.js',
-    '~plugins/date-filter.js'
+    '~plugins/date-filter.js',
+    '~plugins/Vuelidate.js'
   ],
 
   /*
