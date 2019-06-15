@@ -22,12 +22,6 @@ export const mutations = {
   login (state, user) {
     state.user = user.email
     state.idToken = user.idToken
-    localStorage.setItem('token', user.idToken)
-    localStorage.setItem('user', user.email)
-
-    const now = new Date()
-    const expirationDate = new Date(now.getTime() + user.expiresIn * 1000)
-    localStorage.setItem('expiresOn', expirationDate)
   },
   logout (state) {
     state.user = ''
@@ -99,7 +93,13 @@ export const actions = {
         returnSecureToken: true
       })
         .then( data => {
-          commit('login', {email: formData.email, idToken: data.idToken, expiresIn: data.expiresIn})
+          localStorage.setItem('token', data.idToken)
+          localStorage.setItem('user', formData.email)
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
+          localStorage.setItem('expiresOn', expirationDate)
+      
+          commit('login', {email: formData.email, idToken: data.idToken})
         })
         .catch(err => console.log(err))
     )
@@ -112,7 +112,12 @@ export const actions = {
         returnSecureToken: true
       })
         .then( data => {
-          commit('login', {email: formData.email, idToken: data.idToken, expiresIn: data.expiresIn})
+          localStorage.setItem('token', data.idToken)
+          localStorage.setItem('user', formData.email)
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
+          localStorage.setItem('expiresOn', expirationDate)
+          commit('login', {email: formData.email, idToken: data.idToken})
         })
         .catch(err => console.log(err))
     )
