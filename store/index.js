@@ -44,9 +44,6 @@ export const actions = {
           return context.error(err)
         })
     )
-    // if (req.session.user) {
-    //   commit('user', req.session.user)
-    // }
   },
   addPost ({ commit, state }, formData) {
     return (
@@ -135,7 +132,7 @@ export const actions = {
               // this.$axios.$get('/users.json?orderBy"email"&equalTo=formData.email')
           const wrkIdToken = data.idToken
           const wrkExpiresIn = data.expiresIn
-          let user = {idToken: data.idToken}
+          let user = {}
           this.$axios.$get('/users.json')
             .then(data => {
               for (let key in data) {
