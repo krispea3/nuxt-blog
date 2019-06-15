@@ -55,8 +55,18 @@
 
       <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
 
-      <b-button v-if="isLogin" @click="login" variant="success">Login</b-button>
-      <b-button v-else @click="register" variant="success">Register</b-button>
+      <b-button v-if="isLogin" 
+        @click="login" 
+        variant="success">
+          Login
+        <b-spinner v-if="isLoading" small></b-spinner>
+      </b-button>
+      <b-button v-else 
+        @click="register" 
+        variant="success">
+          Register
+        <b-spinner v-if="isLoading" small></b-spinner>
+      </b-button>
     </b-form>
 </template>
 
@@ -77,7 +87,8 @@ export default {
         email: '',
         password: ''
       },
-      isLogin: false
+      isLogin: false,
+      isLoading: false
     }
   },
   computed: {
@@ -87,17 +98,23 @@ export default {
   },
   methods: {
     login () {
+      this.isLoading = true
       this.$store.dispatch('login', this.form)
         .then( () => {
-          if (!this.$store.getters.userError) {
+          this.isLoading = false
+          if (!this.error) {
             this.$router.go(-1)
           }
         })
     },
     register () {
+      this.isLoading = true
       this.$store.dispatch('register', this.form)
         .then( () => {
-          this.$router.go(-1)
+          this.isLoading = false
+          if (!this.error) {
+            this.$router.go(-1)
+          }
         })
     },
   }
