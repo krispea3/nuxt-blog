@@ -143,6 +143,9 @@ export const actions = {
     // If token expired abort
     const now = new Date()
     if (now > localStorage.expiresOn) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('expiresOn') 
       return
     }
 
