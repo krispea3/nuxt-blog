@@ -93,13 +93,21 @@ export const actions = {
         returnSecureToken: true
       })
         .then( data => {
+          // Write localStorage
           localStorage.setItem('token', data.idToken)
           localStorage.setItem('user', formData.email)
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
+          // Write user record to firebase database
+          this.$axios.$post('/users.json', {email: formData.email})
+            .then(data => {
+              console.log(data)
+            })
+            .catch(err => console.log(err))
+
           commit('login', {email: formData.email, idToken: data.idToken})
-          dispatch('setAulologout', data.expiresIn * 1000)
+          dispatch('setAutologout', data.expiresIn * 1000)
         })
         .catch(err => console.log(err))
     )
@@ -112,11 +120,13 @@ export const actions = {
         returnSecureToken: true
       })
         .then( data => {
+          // Set local storage
           localStorage.setItem('token', data.idToken)
           localStorage.setItem('user', formData.email)
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
+
           commit('login', {email: formData.email, idToken: data.idToken})
           dispatch('setAutologout', data.expiresIn * 1000)
         })
