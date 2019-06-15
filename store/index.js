@@ -152,8 +152,7 @@ export const actions = {
     // Setting time for autologout
     const endDate = new Date(localStorage.expiresOn)
     const expiresIn = (endDate.getTime() - now.getTime())
-    // dispatch('setAutologout', expiresIn)
-    dispatch('setAutologout', 5000)
+    dispatch('setAutologout', expiresIn)
   }
 
 }
