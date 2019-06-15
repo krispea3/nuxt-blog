@@ -12,9 +12,9 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown v-if="user"
+        <b-nav-item-dropdown v-if="user.email"
           id="my-nav-dropdown"
-          :text="user"
+          :text="'Welcome ' + user.firstName"
           toggle-class="nav-link-custom"
           right
         >
@@ -22,7 +22,7 @@
           <!-- <b-dropdown-divider></b-dropdown-divider> -->
       </b-nav-item-dropdown>
 
-        <b-nav-item v-if="user" to="/admin">Admin</b-nav-item>
+        <b-nav-item v-if="user.email" to="/admin">Admin</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

@@ -1,7 +1,6 @@
 export const state = () => ({
   posts: [],
-  user: '',
-  idToken: null
+  user: {},
 })
 
 export const mutations = {
@@ -20,16 +19,13 @@ export const mutations = {
     state.posts.splice(index, 1)
   },
   login (state, user) {
-    state.user = user.email
-    state.idToken = user.idToken
+    state.user = user
   },
   logout (state) {
-    state.user = ''
-    state.idToken = null
+    state.user = {}
   },
-  loadUser (state, userData) {
-    state.idToken = userData.token
-    state.user = userData.user
+  loadUser (state, user) {
+    state.user = user
   }
 }
 
@@ -52,33 +48,33 @@ export const actions = {
     //   commit('user', req.session.user)
     // }
   },
-  addPost (context, formData) {
+  addPost ({ commit, state }, formData) {
     return (
-      this.$axios.$post('/post.json', formData)
+      this.$axios.$post('/post.json' + '?auth=' + state.user.idToken, formData)
         .then(data => {
-          context.commit('addPostToPosts', {formData: formData, id: data.name})
+          commit('addPostToPosts', {formData: formData, id: data.name})
         })
         .catch(err => {
           return console.log(err)
         })
     )
   },
-  updatePost (context, payload) {
+  updatePost ({ commit, state }, payload) {
     return (
-      this.$axios.$put('/post/' + payload.id + '.json', payload.formData)
+      this.$axios.$put('/post/' + payload.id + '.json' + '?auth=' + state.user.idToken, payload.formData)
         .then(data => {
-          context.commit('updatePostInPosts', payload)
+          commit('updatePostInPosts', payload)
         })
         .catch(err => {
           return console.log(err)
         })
     )
   },
-  deletePost (context, id) {
+  deletePost ({ commit, state }, id) {
     return (
-      this.$axios.$delete('/post/' + id + '.json')
+      this.$axios.$delete('/post/' + id + '.json' + '?auth=' + state.user.idToken)
         .then(data => {
-          context.commit('deletePostInPosts', id)
+          commit('deletePostInPosts', id)
         })
         .catch(err => {
            return console.log(err)
@@ -100,13 +96,20 @@ export const actions = {
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
           // Write user record to firebase database
-          this.$axios.$post('/users.json', {email: formData.email})
+          const userData = formData
+          delete userData['password']
+          this.$axios.$post('/users.json' + '?auth=' + data.idToken, userData)
             .then(data => {
               console.log(data)
             })
             .catch(err => console.log(err))
-
-          commit('login', {email: formData.email, idToken: data.idToken})
+          const user = {
+            firstName: formData.firstName,
+            surName: formData.surName,
+            email: formData.email,
+            idToken: data.idToken
+          }  
+          commit('login', user)
           dispatch('setAutologout', data.expiresIn * 1000)
         })
         .catch(err => console.log(err))
@@ -127,8 +130,26 @@ export const actions = {
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
 
-          commit('login', {email: formData.email, idToken: data.idToken})
-          dispatch('setAutologout', data.expiresIn * 1000)
+          // Read user data on firebase
+              // Not working, returns 400 error. Bad request. Need help
+              // this.$axios.$get('/users.json?orderBy"email"&equalTo=formData.email')
+          const wrkIdToken = data.idToken
+          const wrkExpiresIn = data.expiresIn
+          let user = {idToken: data.idToken}
+          this.$axios.$get('/users.json')
+            .then(data => {
+              for (let key in data) {
+                if (data[key].email === formData.email) {
+                  user = data[key]
+                  user.idToken = wrkIdToken
+                  user.id = key
+                  break  
+                }
+              }
+              commit('login', user)
+              dispatch('setAutologout', wrkExpiresIn * 1000)
+            })
+            .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
     )
@@ -158,11 +179,25 @@ export const actions = {
       localStorage.removeItem('expiresOn') 
       return
     }
-    commit('loadUser', {user: localStorage.user, token: localStorage.token})
-    // Setting time for autologout
-    const endDate = new Date(localStorage.expiresOn)
-    const expiresIn = (endDate.getTime() - now.getTime())
-    dispatch('setAutologout', expiresIn)
+    // Read user data from firebase
+    let user = {}
+    this.$axios.$get('/users.json')
+      .then(data => {
+        for (let key in data) {
+          if (data[key].email === localStorage.user) {
+            user = data[key]
+            user.id = key
+            break  
+          }
+        }
+        user.idToken = localStorage.token
+        commit('loadUser', user)
+        // Setting time for autologout
+        const endDate = new Date(localStorage.expiresOn)
+        const expiresIn = (endDate.getTime() - now.getTime())
+        dispatch('setAutologout', expiresIn)    
+      })
+      .catch(err => console.log(err))
   }
 
 }

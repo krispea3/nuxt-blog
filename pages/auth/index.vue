@@ -1,13 +1,39 @@
 <template>
   <!-- <div> -->
     <b-form>
-      <b-form-group
+      <b-form-group v-if="!isLogin"
         id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-        description="We'll never share your email with anyone else.">
+        label="Firstname:"
+        label-for="input-1">
         <b-form-input
           id="input-1"
+          v-model="form.firstName"
+          type="text"
+          required
+          placeholder="Enter firstname">
+        </b-form-input>
+      </b-form-group>
+
+      <b-form-group v-if="!isLogin"
+        id="input-group-2"
+        label="Surname:"
+        label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.surName"
+          type="text"
+          required
+          placeholder="Enter surname">
+        </b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-3"
+        label="Email address:"
+        label-for="input-3"
+        description="We'll never share your email with anyone else.">
+        <b-form-input
+          id="input-3"
           v-model="form.email"
           type="email"
           required
@@ -16,11 +42,11 @@
       </b-form-group>
 
       <b-form-group
-        id="input-group-2"
+        id="input-group-4"
         label="Password:"
-        label-for="input-2">
+        label-for="input-4">
         <b-form-input
-          id="input-2"
+          id="input-4"
           v-model="form.password"
           type="password"
           required
@@ -45,6 +71,8 @@ export default {
   data () {
     return {
       form: {
+        firstName: '',
+        surName: '',
         email: '',
         password: ''
       },
