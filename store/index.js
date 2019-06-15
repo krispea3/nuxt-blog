@@ -2,7 +2,8 @@ export const state = () => ({
   posts: [],
   user: {},
   userError: '',
-  postError: ''
+  postError: '',
+  isLoading: false
 })
 
 export const mutations = {
@@ -34,6 +35,9 @@ export const mutations = {
   },
   setPostError (state, msg) {
     state.postError = msg
+  },
+  isLoading (state, status) {
+    state.isLoading = status
   }
 
 }
@@ -214,6 +218,9 @@ export const actions = {
         dispatch('setAutologout', expiresIn)    
       })
       .catch(err => console.log(err))
+  },
+  isLoading ({ commit }, status) {
+    commit('isLoading', status)
   }
 
 }
@@ -233,6 +240,9 @@ export const getters = {
   },
   postError (state) {
     return state.postError
+  },
+  isLoading (state) {
+    return state.isLoading
   }
 
 }

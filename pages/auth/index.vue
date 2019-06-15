@@ -1,111 +1,20 @@
 <template>
-    <b-form>
-      <b-form-group v-if="!isLogin"
-        id="input-group-1"
-        label="Firstname:"
-        label-for="input-1">
-        <b-form-input
-          id="input-1"
-          v-model="form.firstName"
-          type="text"
-          required
-          placeholder="Enter firstname">
-        </b-form-input>
-      </b-form-group>
-
-      <b-form-group v-if="!isLogin"
-        id="input-group-2"
-        label="Surname:"
-        label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="form.surName"
-          type="text"
-          required
-          placeholder="Enter surname">
-        </b-form-input>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-3"
-        label="Email address:"
-        label-for="input-3"
-        description="We'll never share your email with anyone else.">
-        <b-form-input :class="{invalid: $v.form.email.$error}"
-          id="input-3"
-          v-model="form.email"
-          type="email"
-          required
-          placeholder="Enter email"
-          autofocus
-          @blur="$v.form.email.$touch()">
-        </b-form-input>
-        <div v-if="$v.form.email.$dirty">
-          <span class="error" v-if="!$v.form.email.email">Invalid email</span>
-          <span class="error" v-if="!$v.form.email.required">Email required</span>
-        </div>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-4"
-        label="Password:"
-        label-for="input-4">
-        <b-form-input
-          id="input-4"
-          v-model="form.password"
-          type="password"
-          required
-          placeholder="Enter password">
-        </b-form-input>
-      </b-form-group>
-
-      <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
-
-      <b-button v-if="isLogin" 
-        @click="login" 
-        variant="success">
-          Login
-        <b-spinner v-if="isLoading" small></b-spinner>
-      </b-button>
-      <b-button v-else 
-        @click="register" 
-        variant="success">
-          Register
-        <b-spinner v-if="isLoading" small></b-spinner>
-      </b-button>
-    </b-form>
+  <div>
+    <LoginForm v-if="$route.query.isLogin"
+      @login="login" />
+    <RegisterForm v-if="$route.query.isRegister" 
+      @register="register" />
+  </div>
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import LoginForm from '~/components/auth/LoginForm'
+import RegisterForm from '~/components/auth/RegisterForm'
 
 export default {
-  created () {
-    if (this.$route.query.isLogin === 'true') {
-      this.isLogin = true
-    } else {
-      this.isLogin = false
-    }
-  },
-  data () {
-    return {
-      form: {
-        firstName: '',
-        surName: '',
-        email: '',
-        password: ''
-      },
-      isLogin: false,
-      isLoading: false
-    }
-  },
-  validations: {
-    form: {
-      email: {
-        required,
-        email
-      }
-    }
+  components: {
+    LoginForm,
+    RegisterForm
   },
   computed: {
     error () {
@@ -113,21 +22,19 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.isLoading = true
-      this.$store.dispatch('login', this.form)
+    login (form) {
+      this.$store.dispatch('login', form)
         .then( () => {
-          this.isLoading = false
+          this.$store.dispatch('isLoading', false)
           if (!this.error) {
             this.$router.go(-1)
           }
         })
     },
-    register () {
-      this.isLoading = true
-      this.$store.dispatch('register', this.form)
+    register (form) {
+      this.$store.dispatch('register', form)
         .then( () => {
-          this.isLoading = false
+          this.$store.dispatch('isLoading', false)
           if (!this.error) {
             this.$router.go(-1)
           }
