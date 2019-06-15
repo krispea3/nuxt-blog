@@ -99,7 +99,7 @@ export const actions = {
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
           commit('login', {email: formData.email, idToken: data.idToken})
-          dispatch('setAulologout', data.expiresIn)
+          dispatch('setAulologout', data.expiresIn * 1000)
         })
         .catch(err => console.log(err))
     )
@@ -118,7 +118,7 @@ export const actions = {
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
           commit('login', {email: formData.email, idToken: data.idToken})
-          dispatch('setAutologout', data.expiresIn)
+          dispatch('setAutologout', data.expiresIn * 1000)
         })
         .catch(err => console.log(err))
     )
@@ -135,7 +135,7 @@ export const actions = {
       alert("Your session has expired! Login again")
     }, duration)
   },
-  tryAutoLogin ({ commit }) {
+  tryAutoLogin ({ commit, dispatch }) {
     // If no token abort
     if (!localStorage.token) {
       return
@@ -148,8 +148,12 @@ export const actions = {
       localStorage.removeItem('expiresOn') 
       return
     }
-
     commit('loadUser', {user: localStorage.user, token: localStorage.token})
+    // Setting time for autologout
+    const endDate = new Date(localStorage.expiresOn)
+    const expiresIn = (endDate.getTime() - now.getTime())
+    // dispatch('setAutologout', expiresIn)
+    dispatch('setAutologout', 5000)
   }
 
 }
