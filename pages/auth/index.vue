@@ -31,14 +31,19 @@
         label="Email address:"
         label-for="input-3"
         description="We'll never share your email with anyone else.">
-        <b-form-input
+        <b-form-input :class="{invalid: $v.form.email.$error}"
           id="input-3"
           v-model="form.email"
           type="email"
           required
-          placeholder="Enter email">
+          placeholder="Enter email"
+          autofocus
+          @blur="$v.form.email.$touch()">
         </b-form-input>
-        {{ $v }}
+        <div v-if="$v.form.email.$dirty">
+          <span class="error" v-if="!$v.form.email.email">Invalid email</span>
+          <span class="error" v-if="!$v.form.email.required">Email required</span>
+        </div>
       </b-form-group>
 
       <b-form-group
@@ -72,7 +77,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   created () {
@@ -95,9 +100,11 @@ export default {
     }
   },
   validations: {
-    email: {
-      required,
-
+    form: {
+      email: {
+        required,
+        email
+      }
     }
   },
   computed: {
@@ -129,3 +136,14 @@ export default {
   }
 }
 </script>
+
+<style>
+  .error {
+    color: red;
+    font-size: 80%;
+    margin-top: 5px;
+  }
+  .invalid {
+    border: 1px solid red;
+  }
+</style>
