@@ -26,8 +26,14 @@ export const mutations = {
   },
   logout (state) {
     state.user = {}
+    state.userError = ''
+    state.postError = ''
+    state.isLoading = false
   },
   loadUser (state, user) {
+    state.user = user
+  },
+  updateUser (state, user) {
     state.user = user
   },
   setUserError (state, msg) {
@@ -170,6 +176,22 @@ export const actions = {
         })
         .catch(err => {
           commit('setUserError', 'Invalid email or password')
+        })
+    )
+  },
+  updateUser ({ commit }, form) {
+    let user = {...form}
+    delete user['id']
+    delete user['idToken']
+    return (
+      this.$axios.$put('/users/' + form.id + '.json' + '?auth=' + form.idToken, user)
+        .then(data => {
+          console.log(data)
+          commit('setUserError', '')
+          commit('updateUser', form)
+        })
+        .catch(err => {
+          commit('setUserError', 'Could not update the user. Please try again later')
         })
     )
   },

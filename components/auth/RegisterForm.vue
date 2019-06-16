@@ -46,6 +46,7 @@
           v-model="form.email"
           type="email"
           required
+          :disabled="user.email ?true :false"
           placeholder="Enter email"
           @blur="$v.form.email.$touch()">
         </b-form-input>
@@ -55,7 +56,7 @@
         </div>
       </b-form-group>
 
-      <b-form-group
+      <b-form-group v-if="!user"
         id="input-group-4"
         label="Password:"
         label-for="input-4"
@@ -76,13 +77,21 @@
 
       <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
 
-      <b-button 
+      <b-button v-if="!user"
         @click="register"
         :disabled="$v.form.$invalid"
         variant="success">
           Register
         <b-spinner v-if="isLoading" small></b-spinner>
       </b-button>
+      <b-button v-if="user"
+        @click="updateUser"
+        :disabled="$v.form.$invalid"
+        variant="success">
+          Save
+        <b-spinner v-if="isLoading" small></b-spinner>
+      </b-button>
+
     </b-form>
 </template>
 
@@ -90,6 +99,13 @@
 import { required, email, minLength } from 'vuelidate/lib/validators'
 
 export default {
+  created () {
+    if (this.user) {
+      this.form = {...this.user}
+      // Assigning pseudo password for formvalidation. Will be written no where
+      this.form.password = '12345678'
+    }
+  },
   data () {
     return {
       form: {
@@ -118,6 +134,12 @@ export default {
       }
     }
   },
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     error () {
       return this.$store.getters.userError
@@ -130,6 +152,12 @@ export default {
     register () {
       this.$store.dispatch('isLoading', true)
       this.$emit('register', this.form)
+    },
+    updateUser () {
+      // remove password from the form
+      delete this.form['password']
+      this.$store.dispatch('isLoading', true)
+      this.$emit('updateUser', this.form)
     }
   }
 
