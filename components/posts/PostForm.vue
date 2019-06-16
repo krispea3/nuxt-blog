@@ -6,39 +6,53 @@
         id="input-group-1"
         label="Title"
         label-for="input-1">
-        <b-form-input
+        <b-form-input :class="{invalid: $v.formData.title.$error}"
           id="input-1"
           v-model="formData.title"
           type="text"
           required
-          placeholder="Enter title">
+          placeholder="Enter title"
+          @blur="$v.formData.title.$touch()">
         </b-form-input>
+        <div v-if="$v.formData.title.$dirty">
+          <span class="error" v-if="!$v.formData.title.required">Title is required</span>
+          <span class="error" v-if="!$v.formData.title.maxLength">Title can only contain 30 chars</span>
+        </div>
       </b-form-group>
       <!-- Description -->
       <b-form-group
         id="input-group-1"
         label="Description"
         label-for="input-1">
-        <b-form-textarea
+        <b-form-textarea :class="{invalid: $v.formData.description.$error}"
           id="input-1"
           v-model="formData.description"
           type="text"
           required
-          placeholder="Enter description">
+          placeholder="Enter description"
+          @blur="$v.formData.description.$touch()">
         </b-form-textarea>
+        <div v-if="$v.formData.description.$dirty">
+          <span class="error" v-if="!$v.formData.description.required">Description is required</span>
+          <span class="error" v-if="!$v.formData.description.maxLength">Description can only contain 80 chars</span>
+        </div>
       </b-form-group>
       <!-- Content -->
       <b-form-group
         id="input-group-1"
         label="Content"
         label-for="input-1">
-        <b-form-textarea
+        <b-form-textarea :class="$v.formData.content.$error"
           id="input-1"
           v-model="formData.content"
           rows="5"
           required
-          placeholder="Enter content">
+          placeholder="Enter content"
+          @blur="$v.formData.content.$touch()">
         </b-form-textarea>
+        <div v-if="$v.formData.content.$dirty">
+          <span class="error" v-if="!$v.formData.content.required">Content is required</span>
+        </div>
       </b-form-group>
       <!-- Image URL -->
       <b-form-group
@@ -69,7 +83,8 @@
 
       <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
 
-      <b-button 
+      <b-button
+        :disabled="$v.formData.$invalid"
         @click="saveForm" 
         variant="success">
           Save
@@ -95,6 +110,8 @@
 </template>
 
 <script>
+import { required, maxLength } from 'vuelidate/lib/validators'
+
   export default {
     created () {
       if (this.post) {
@@ -124,6 +141,21 @@
         },
       }
     },
+    validations: {
+      formData: {
+        title: {
+          required,
+          maxLength: maxLength(30)
+        },
+        description: {
+          required,
+          maxLength: maxLength(80)
+        },
+        content: {
+          required
+        },
+      }
+    },
     props: {
       post: {
         type: Object,
@@ -135,7 +167,9 @@
       saveForm () {
         this.isSaving = true
         this.formData.updated = new Date()
-        this.formData.author = 'Christian'
+        const user = this.$store.getters.user
+        const author = user.firstName + ' ' + user.surName
+        this.formData.author = author
 
         if (!this.post) {
           this.formData.created = new Date()
@@ -166,3 +200,14 @@
       // },
   }
 </script>
+
+<style scoped>
+  .error {
+    color: red;
+    font-size: 80%;
+    margin-top: 5px;
+  }
+  .invalid {
+    border: 1px solid red;
+  }
+</style>
