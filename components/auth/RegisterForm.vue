@@ -4,27 +4,36 @@
         id="input-group-1"
         label="Firstname:"
         label-for="input-1">
-        <b-form-input
+        <b-form-input :class="{invalid: $v.form.firstName.$error}"
           id="input-1"
           v-model="form.firstName"
           type="text"
           required
           autofocus
-          placeholder="Enter firstname">
+          placeholder="Enter firstname"
+          @blur="$v.form.firstName.$touch()">
         </b-form-input>
+        <div v-if="$v.form.firstName.$dirty">
+          <span class="error" v-if="!$v.form.firstName.required">Firstname required</span>
+        </div>
       </b-form-group>
 
       <b-form-group
         id="input-group-2"
         label="Surname:"
         label-for="input-2">
-        <b-form-input
+        <b-form-input :class="{invalid: $v.form.surName.$error}"
           id="input-2"
           v-model="form.surName"
           type="text"
           required
-          placeholder="Enter surname">
+          placeholder="Enter surname"
+          @blur="$v.form.surName.$touch()">
         </b-form-input>
+        <div v-if="$v.form.surName.$dirty">
+          <span class="error" v-if="!$v.form.surName.required">Surname required</span>
+        </div>
+
       </b-form-group>
 
       <b-form-group
@@ -49,20 +58,27 @@
       <b-form-group
         id="input-group-4"
         label="Password:"
-        label-for="input-4">
-        <b-form-input
+        label-for="input-4"
+        description="Minimum 8 chars">
+        <b-form-input :class="{invalid: $v.form.password.$error}"
           id="input-4"
           v-model="form.password"
           type="password"
           required
-          placeholder="Enter password">
+          placeholder="Enter password"
+          @blur="$v.form.password.$touch()">
         </b-form-input>
+        <div v-if="$v.form.password.$dirty">
+          <span class="error" v-if="!$v.form.password.required">Password required</span>
+          <span class="error" v-if="!$v.form.password.minLength">Password needs at least 8 chars</span>
+        </div>
       </b-form-group>
 
       <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
 
       <b-button 
-        @click="register" 
+        @click="register"
+        :disabled="$v.form.$invalid"
         variant="success">
           Register
         <b-spinner v-if="isLoading" small></b-spinner>
@@ -71,7 +87,7 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, minLength } from 'vuelidate/lib/validators'
 
 export default {
   data () {
@@ -86,9 +102,19 @@ export default {
   },
   validations: {
     form: {
+      firstName: {
+        required
+      },
+      surName: {
+        required
+      },
       email: {
         required,
         email
+      },
+      password: {
+        required,
+        minLength: minLength(8)
       }
     }
   },

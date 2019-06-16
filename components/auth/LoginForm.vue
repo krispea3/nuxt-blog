@@ -23,20 +23,27 @@
       <b-form-group
         id="input-group-2"
         label="Password:"
-        label-for="input-2">
-        <b-form-input
+        label-for="input-2"
+        description="At least 8 chars required">
+        <b-form-input :class="{invalid: $v.form.password.$error}"
           id="input-2"
           v-model="form.password"
           type="password"
           required
-          placeholder="Enter password">
+          placeholder="Enter password"
+          @blur="$v.form.password.$touch()">
         </b-form-input>
+        <div v-if="$v.form.password.$dirty">
+          <span class="error" v-if="!$v.form.password.required">Password required</span>
+          <span class="error" v-if="!$v.form.password.minLength">Password needs at least 8 chars</span>
+        </div>
       </b-form-group>
 
       <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
 
       <b-button
-        @click="login" 
+        @click="login"
+        :disabled="$v.form.$invalid" 
         variant="success">
           Login
         <b-spinner v-if="isLoading" small></b-spinner>
@@ -45,7 +52,7 @@
 </template>
 
 <script>
-import { required, email} from 'vuelidate/lib/validators'
+import { required, email, minLength } from 'vuelidate/lib/validators'
 
 export default {
   data () {
@@ -63,6 +70,10 @@ export default {
       email: {
         required,
         email
+      },
+      password: {
+        required,
+        minLength: minLength(8)
       }
     }
   },
