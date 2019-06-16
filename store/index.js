@@ -119,7 +119,6 @@ export const actions = {
           delete userData['password']
           this.$axios.$post('/users.json' + '?auth=' + data.idToken, userData)
             .then(data => {
-              console.log(data)
             })
             .catch(err => console.log(err))
           const user = {
@@ -186,7 +185,6 @@ export const actions = {
     return (
       this.$axios.$put('/users/' + form.id + '.json' + '?auth=' + form.idToken, user)
         .then(data => {
-          console.log(data)
           commit('setUserError', '')
           commit('updateUser', form)
         })

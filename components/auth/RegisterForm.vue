@@ -46,7 +46,7 @@
           v-model="form.email"
           type="email"
           required
-          :disabled="user.email ?true :false"
+          :disabled="user ?true :false"
           placeholder="Enter email"
           @blur="$v.form.email.$touch()">
         </b-form-input>
@@ -137,7 +137,7 @@ export default {
   props: {
     user: {
       type: Object,
-      required: true
+      required: false
     }
   },
   computed: {
