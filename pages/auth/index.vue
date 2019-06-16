@@ -43,14 +43,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .error {
-    color: red;
-    font-size: 80%;
-    margin-top: 5px;
-  }
-  .invalid {
-    border: 1px solid red;
-  }
-</style>
