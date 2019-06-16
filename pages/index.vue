@@ -47,5 +47,8 @@ export default {
     background-image: url('../assets/images/jumbotron.jpg');
     color: white;
   }
+  .jumbotron {
+    margin-bottom: -10px;
+  }
 </style>
 

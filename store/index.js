@@ -3,7 +3,8 @@ export const state = () => ({
   user: {},
   userError: '',
   postError: '',
-  isLoading: false
+  isLoading: false,
+  searchString: ''
 })
 
 export const mutations = {
@@ -44,6 +45,9 @@ export const mutations = {
   },
   isLoading (state, status) {
     state.isLoading = status
+  },
+  setSearchString (state, searchString) {
+    state.searchString = searchString
   }
 
 }
@@ -241,6 +245,9 @@ export const actions = {
   },
   isLoading ({ commit }, status) {
     commit('isLoading', status)
+  },
+  setSearchString ({ commit }, searchValue) {
+    commit('setSearchString', searchValue)
   }
 
 }
@@ -263,6 +270,9 @@ export const getters = {
   },
   isLoading (state) {
     return state.isLoading
+  },
+  searchString (state) {
+    return state.searchString
   }
 
 }
