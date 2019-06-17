@@ -6992,6 +6992,11 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-material-icon@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue-material-icon/-/vue-material-icon-1.0.1.tgz#00f92bdaf654391450e8880fb0da8683ff09988e"
+  integrity sha512-4zxk/cJb1YWVJr6f7C2YyV26w5kKd3WETFygvK551rD7qBbMrRI3GDFAouUbMX/WrPGOJKtTun+gazGZTC0gFw==
+
 vue-meta@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-meta/-/vue-meta-1.6.0.tgz#89b664f6011a207e098e8ba3b9d32e29c819b65d"
