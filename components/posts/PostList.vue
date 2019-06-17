@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div v-if="displayType != 'list'">
+    <!-- Display posts as cards -->
+    <div v-if="selectedDisplayType === 'card'">
       <b-row class="mb-3" no-gutters align-h="center">
         <b-col cols="12">
-          <Search />
+          <Header
+            :selected="displayType"
+            @displayType="setDisplayType" />
       </b-col>
       </b-row>
       <b-row no-gutters align-h="center">
@@ -18,11 +21,14 @@
         </b-card-group>
       </b-row>
     </div>
-
-    <div v-else>
+    
+    <!-- Display posts as list -->
+    <div v-if="selectedDisplayType === 'list'">
       <b-row class="mb-3" no-gutters align-h="center">
         <b-col cols="10">
-          <Search />
+          <Header
+            :selected="displayType"
+            @displayType="setDisplayType"/>
         </b-col>
       </b-row>
       <div  v-for="post in filteredPosts" :key="post.id">
@@ -43,6 +49,7 @@
 <script>
 import PostDetail from './PostDetail'
 import Search from '~/components/Search'
+import Header from '~/components/posts/Header'
 
 export default {
   // This vue lifecycle hook executes on the client
@@ -51,7 +58,8 @@ export default {
   },
   data () {
     return {
-      posts: []
+      posts: [],
+      displayType: 'card'
     }
   },
   computed: {
@@ -62,20 +70,25 @@ export default {
       } else {
         return this.posts.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       }
+    },
+    selectedDisplayType () {
+      return this.displayType
     }
   },
   components: {
     PostDetail,
-    Search
+    Search,
+    Header
   },
   props: {
     isAdmin: {
       type: Boolean,
       required: true
     },
-    displayType: {
-      type: String,
-      required: false
+  },
+  methods: {
+    setDisplayType (type) {
+      this.displayType = type
     }
   }
 }

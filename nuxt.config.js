@@ -18,7 +18,9 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // Google fonts Open Sans
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"}
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"},
+      // Google materia-design icons
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/icon?family=Material+Icons"},
     ]
   },
 
@@ -51,8 +53,7 @@ export default {
   plugins: [
     '~plugins/core-components.js',
     '~plugins/date-filter.js',
-    '~plugins/Vuelidate.js',
-    '~plugins/VueMaterialIcon.js'
+    '~plugins/Vuelidate.js'
   ],
 
   /*

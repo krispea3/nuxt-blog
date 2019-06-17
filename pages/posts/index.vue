@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PostList :isAdmin="false" :isPreview="true" displayType="list"/>
+    <PostList :isAdmin="false" :isPreview="true"/>
   </div>
 </template>
 
