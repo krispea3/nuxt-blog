@@ -125,8 +125,9 @@ export default {
       email: {
         required,
         email,
-        unique: (val) => {
-          if (val === '') return true
+        unique: (vm, val) => {
+          // Don't check email if its empty or it's Edit profile
+          if (val === '' || vm.user) return true
           return axios.get('https://nuxt-blog-9be94.firebaseio.com/users.json?orderBy="email"&equalTo="' + val + '"')
             .then(res => {
               return Object.keys(res.data).length === 0
