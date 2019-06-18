@@ -25,6 +25,7 @@ export default {
     addPost () {
       this.$router.push('admin/newPost')
     }
-  }
+  },
+  middleware: 'auth'
 }
 </script>

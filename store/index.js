@@ -251,6 +251,13 @@ export const getters = {
   user (state) {
     return state.user
   },
+  isLoggedIn (state) {
+    if (state.user.idToken) {
+      return true
+    } else {
+      return false
+    }
+  },
   error (state) {
     return state.error
   },
