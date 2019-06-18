@@ -23,6 +23,10 @@
           <b-dropdown-item @click="logout">Logout</b-dropdown-item>
       </b-nav-item-dropdown>
 
+        <b-nav-item v-if="!user.email" 
+          to="/auth?isRegister=true">
+            Register</b-nav-item>
+        <b-nav-item v-if="!user.email" to="/auth?isLogin=true">Login</b-nav-item>
         <b-nav-item v-if="user.email" to="/admin">Admin</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
