@@ -106,7 +106,7 @@ export const actions = {
   },
   register ({ commit, dispatch }, formData) {
     return (
-      this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyC7ItGWr8uZpRAHrGC8_qztVg8QxMulzZE', {
+      this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + process.env.fbAPIKey, {
         email: formData.email, 
         password: formData.password, 
         returnSecureToken: true
@@ -142,7 +142,7 @@ export const actions = {
   },
   login ({ commit, dispatch }, formData) {
     return (
-      this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyC7ItGWr8uZpRAHrGC8_qztVg8QxMulzZE', {
+      this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + process.env.fbAPIKey, {
         email: formData.email, 
         password: formData.password, 
         returnSecureToken: true
