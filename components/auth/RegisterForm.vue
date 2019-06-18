@@ -8,7 +8,6 @@
           id="input-1"
           v-model="form.firstName"
           type="text"
-          required
           autofocus
           placeholder="Enter firstname"
           @blur="$v.form.firstName.$touch()">
@@ -26,7 +25,6 @@
           id="input-2"
           v-model="form.surName"
           type="text"
-          required
           placeholder="Enter surname"
           @blur="$v.form.surName.$touch()">
         </b-form-input>
@@ -45,7 +43,6 @@
           id="input-3"
           v-model="form.email"
           type="email"
-          required
           :disabled="user ?true :false"
           placeholder="Enter email"
           @blur="$v.form.email.$touch()">
@@ -66,7 +63,6 @@
           id="input-4"
           v-model="form.password"
           type="password"
-          required
           placeholder="Enter password"
           @blur="$v.form.password.$touch()">
         </b-form-input>

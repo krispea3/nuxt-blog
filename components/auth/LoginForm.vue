@@ -9,7 +9,6 @@
           id="input-1"
           v-model="form.email"
           type="email"
-          required
           placeholder="Enter email"
           autofocus
           @blur="$v.form.email.$touch()">
@@ -29,7 +28,6 @@
           id="input-2"
           v-model="form.password"
           type="password"
-          required
           placeholder="Enter password"
           @blur="$v.form.password.$touch()">
         </b-form-input>

@@ -10,7 +10,6 @@
           id="input-1"
           v-model="formData.title"
           type="text"
-          required
           placeholder="Enter title"
           @blur="$v.formData.title.$touch()">
         </b-form-input>
@@ -28,7 +27,6 @@
           id="input-1"
           v-model="formData.description"
           type="text"
-          required
           placeholder="Enter description"
           @blur="$v.formData.description.$touch()">
         </b-form-textarea>
@@ -46,7 +44,6 @@
           id="input-1"
           v-model="formData.content"
           rows="5"
-          required
           placeholder="Enter content"
           @blur="$v.formData.content.$touch()">
         </b-form-textarea>
@@ -63,7 +60,6 @@
           id="input-1"
           v-model="formData.imgUrl"
           type="text"
-          required
           placeholder="Enter image URL">
         </b-form-input>
       </b-form-group>
@@ -76,7 +72,6 @@
           id="input-1"
           v-model="formData.imgAlt"
           type="text"
-          required
           placeholder="Enter image alt-tag">
         </b-form-input>
       </b-form-group>
