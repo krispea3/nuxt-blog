@@ -2,6 +2,7 @@
   <div>
     <b-row align-h="center">
       <b-col>
+        <b-alert v-if="error" variant="danger" show>{{ error }}</b-alert>
         <b-jumbotron 
             header="Get the latest Tech-News!" 
             lead="All about programming, frameworks and lot more" 
@@ -25,6 +26,11 @@ export default {
   data () {
     return {
       isAdmin: false
+    }
+  },
+  computed: {
+    error () {
+      return this.$store.getters.userError
     }
   },
   methods: {
