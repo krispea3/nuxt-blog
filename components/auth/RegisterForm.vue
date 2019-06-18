@@ -53,6 +53,7 @@
         <div v-if="$v.form.email.$dirty">
           <span class="error" v-if="!$v.form.email.email">Invalid email</span>
           <span class="error" v-if="!$v.form.email.required">Email required</span>
+          <span class="error" v-if="!$v.form.email.unique">This email address is already registered. Please Login</span>
         </div>
       </b-form-group>
 
@@ -97,6 +98,7 @@
 
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators'
+import axios from 'axios'
 
 export default {
   created () {
@@ -126,7 +128,14 @@ export default {
       },
       email: {
         required,
-        email
+        email,
+        unique: (val) => {
+          if (val === '') return true
+          return axios.get('https://nuxt-blog-9be94.firebaseio.com/users.json?orderBy="email"&equalTo="' + val + '"')
+            .then(res => {
+              return Object.keys(res.data).length === 0
+            })
+        }
       },
       password: {
         required,
