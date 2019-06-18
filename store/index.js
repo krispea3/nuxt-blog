@@ -156,21 +156,15 @@ export const actions = {
           localStorage.setItem('expiresOn', expirationDate)
           commit('setUserError', '')
           // Read user data on firebase
-              // Not working, returns 400 error. Bad request. Need help
-              // this.$axios.$get('/users.json?orderBy"email"&equalTo=formData.email')
           const wrkIdToken = data.idToken
           const wrkExpiresIn = data.expiresIn
           let user = {}
-          this.$axios.$get('/users.json')
+          this.$axios.$get('/users.json?orderBy="email"&equalTo="' + formData.email + '"')
             .then(data => {
-              for (let key in data) {
-                if (data[key].email === formData.email) {
-                  user = data[key]
-                  user.idToken = wrkIdToken
-                  user.id = key
-                  break  
-                }
-              }
+              const id = Object.keys(data)
+              user = data[id]
+              user.id = id[0]
+              user.idToken = wrkIdToken
               commit('login', user)
               commit('setUserError', '')
               dispatch('setAutologout', wrkExpiresIn * 1000)
@@ -225,23 +219,23 @@ export const actions = {
     }
     // Read user data from firebase
     let user = {}
-    this.$axios.$get('/users.json')
+    this.$axios.$get('/users.json?orderBy="email"&equalTo="' + localStorage.user + '"')
       .then(data => {
-        for (let key in data) {
-          if (data[key].email === localStorage.user) {
-            user = data[key]
-            user.id = key
-            break  
-          }
-        }
+        const id = Object.keys(data)
+        user = data[id]
+        user.id = id[0]
         user.idToken = localStorage.token
         commit('loadUser', user)
+        commit('setUserError', '')
         // Setting time for autologout
         const endDate = new Date(localStorage.expiresOn)
         const expiresIn = (endDate.getTime() - now.getTime())
         dispatch('setAutologout', expiresIn)    
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        commit('setUserError', 'Could not Autologin. Refresh the page or Login again')
+        console.log(err)
+      })
   },
   isLoading ({ commit }, status) {
     commit('isLoading', status)
