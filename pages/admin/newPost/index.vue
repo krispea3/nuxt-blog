@@ -11,7 +11,7 @@ export default {
   },
   computed: {
     error () {
-      return this.$store.getters.postError
+      return this.$store.getters.error
     }
   },
   methods: {

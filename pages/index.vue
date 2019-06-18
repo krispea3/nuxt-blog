@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     error () {
-      return this.$store.getters.userError
+      return this.$store.getters.error
     }
   },
   methods: {

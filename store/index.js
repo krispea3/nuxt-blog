@@ -1,8 +1,7 @@
 export const state = () => ({
   posts: [],
   user: {},
-  userError: '',
-  postError: '',
+  error: '',
   isLoading: false,
   searchString: ''
 })
@@ -27,8 +26,7 @@ export const mutations = {
   },
   logout (state) {
     state.user = {}
-    state.userError = ''
-    state.postError = ''
+    state.error = ''
     state.isLoading = false
   },
   loadUser (state, user) {
@@ -37,11 +35,8 @@ export const mutations = {
   updateUser (state, user) {
     state.user = user
   },
-  setUserError (state, msg) {
-    state.userError = msg
-  },
-  setPostError (state, msg) {
-    state.postError = msg
+  setError (state, msg) {
+    state.error = msg
   },
   isLoading (state, status) {
     state.isLoading = status
@@ -72,11 +67,11 @@ export const actions = {
     return (
       this.$axios.$post('/post.json' + '?auth=' + state.user.idToken, formData)
         .then(data => {
-          commit('setPostError', '')
+          commit('setError', '')
           commit('addPostToPosts', {formData: formData, id: data.name})
         })
         .catch(err => {
-          commit('setPostError', 'Cannot add post. Try again later')
+          commit('setError', 'Cannot add post. Try again later')
         })
     )
   },
@@ -84,11 +79,11 @@ export const actions = {
     return (
       this.$axios.$put('/post/' + payload.id + '.json' + '?auth=' + state.user.idToken, payload.formData)
         .then(data => {
-          commit('setPostError', '')
+          commit('setError', '')
           commit('updatePostInPosts', payload)
         })
         .catch(err => {
-          commit('setPostError', 'Cannot update post. Please try again later')
+          commit('setError', 'Cannot update post. Please try again later')
         })
     )
   },
@@ -96,11 +91,11 @@ export const actions = {
     return (
       this.$axios.$delete('/post/' + id + '.json' + '?auth=' + state.user.idToken)
         .then(data => {
-          commit('setPostError', '')
+          commit('setError', '')
           commit('deletePostInPosts', id)
         })
         .catch(err => {
-          commit('setPostError', 'Error deleting the post. Try again later')
+          commit('setError', 'Error deleting the post. Try again later')
         })
     )
   },
@@ -131,12 +126,12 @@ export const actions = {
             email: formData.email,
             idToken: data.idToken
           }
-          commit('setUserError', '') 
+          commit('setError', '') 
           commit('login', user)
           dispatch('setAutologout', data.expiresIn * 1000)
         })
         .catch(err => {
-          commit('setUserError', 'Cannot login the user, try again later')
+          commit('setError', 'Cannot login the user, try again later')
         })
     )
   },
@@ -154,7 +149,7 @@ export const actions = {
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
-          commit('setUserError', '')
+          commit('setError', '')
           // Read user data on firebase
           const wrkIdToken = data.idToken
           const wrkExpiresIn = data.expiresIn
@@ -166,13 +161,13 @@ export const actions = {
               user.id = id[0]
               user.idToken = wrkIdToken
               commit('login', user)
-              commit('setUserError', '')
+              commit('setError', '')
               dispatch('setAutologout', wrkExpiresIn * 1000)
             })
             .catch(err => console.log(err))
         })
         .catch(err => {
-          commit('setUserError', 'Invalid email or password')
+          commit('setError', 'Invalid email or password')
         })
     )
   },
@@ -183,11 +178,11 @@ export const actions = {
     return (
       this.$axios.$put('/users/' + form.id + '.json' + '?auth=' + form.idToken, user)
         .then(data => {
-          commit('setUserError', '')
+          commit('setError', '')
           commit('updateUser', form)
         })
         .catch(err => {
-          commit('setUserError', 'Could not update the user. Please try again later')
+          commit('setError', 'Could not update the user. Please try again later')
         })
     )
   },
@@ -226,14 +221,14 @@ export const actions = {
         user.id = id[0]
         user.idToken = localStorage.token
         commit('loadUser', user)
-        commit('setUserError', '')
+        commit('setError', '')
         // Setting time for autologout
         const endDate = new Date(localStorage.expiresOn)
         const expiresIn = (endDate.getTime() - now.getTime())
         dispatch('setAutologout', expiresIn)    
       })
       .catch(err => {
-        commit('setUserError', 'Could not Autologin. Refresh the page or Login again')
+        commit('setError', 'Could not Autologin. Refresh the page or Login again')
         console.log(err)
       })
   },
@@ -256,11 +251,8 @@ export const getters = {
   user (state) {
     return state.user
   },
-  userError (state) {
-    return state.userError
-  },
-  postError (state) {
-    return state.postError
+  error (state) {
+    return state.error
   },
   isLoading (state) {
     return state.isLoading

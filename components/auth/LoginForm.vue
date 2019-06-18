@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     error () {
-      return this.$store.getters.userError
+      return this.$store.getters.error
     },
     isLoading () {
       return this.$store.getters.isLoading
