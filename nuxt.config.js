@@ -65,7 +65,9 @@ export default {
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
     // Doc: https://github.com/nuxt-community/axios-module
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // Doc: https://www.npmjs.com/package/cookie-universal-nuxt
+    'cookie-universal-nuxt'
   ],
   // Made available through modules. No need to import axios anymore
   // Access it with:
