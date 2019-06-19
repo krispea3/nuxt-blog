@@ -113,6 +113,17 @@ export const actions = {
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
+          // Write cookies
+          // const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
+          // const now = new Date()
+          this.$cookies.set('token', data.idToken, {
+            path: '/',
+            expires: expirationDate
+          })
+          this.$cookies.set('user', formData.email, {
+            path: '/',
+            expires: expirationDate
+          })
           // Write user record to firebase database
           const userData = formData
           delete userData['password']
@@ -150,6 +161,19 @@ export const actions = {
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
           localStorage.setItem('expiresOn', expirationDate)
           commit('setError', '')
+          // Set cookies
+          // const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
+          // const now = new Date()
+          const testExpiration = new Date(now.getTime() + data.expiresIn * 1000)
+          this.$cookies.set('token', data.idToken, {
+            path: '/',
+            expires: testExpiration
+          })
+          this.$cookies.set('user', formData.email, {
+            path: '/',
+            expires: testExpiration
+          })
+          // commit('setError', '')
           // Read user data on firebase
           const wrkIdToken = data.idToken
           const wrkExpiresIn = data.expiresIn
@@ -190,6 +214,10 @@ export const actions = {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     localStorage.removeItem('expiresOn')
+    // Remove cookies
+    // this.$cookies.removeAll() //works only on root-path '/'
+    this.$cookies.remove('token', {path: '/'})
+    this.$cookies.remove('user', {path: '/'})
     commit('logout')
     this.$router.push('/')
   },
