@@ -50,6 +50,7 @@ export const mutations = {
 export const actions = {
   nuxtServerInit (vuexContext, context) {
     return (
+      // Fetching posts
       context.app.$axios.$get('/post.json')
         .then(data => {
           const posts = []
@@ -57,10 +58,40 @@ export const actions = {
             posts.push({...data[key], id: key})
           }
           vuexContext.commit('loadPosts', posts)
+      // Fetching user if cookie token available
+          if (context.req.headers.cookie) {
+            const token = context.app.$cookies.get('token')
+            const userEmail = context.app.$cookies.get('user')
+            const expirationDate = context.app.$cookies.get('expirationDate')
+            let user = {}
+            return context.app.$axios.$get('/users.json')
+              .then(data => {
+                for (let key in data) {
+                  if (data[key].email === userEmail) {
+                    user = data[key]
+                    user.id = key
+                    user.idToken = token
+                    vuexContext.commit('loadUser', user)
+                    vuexContext.commit('setError', '')
+                    // Setting time for autologout
+                    const now = new Date()
+                    const endDate = new Date(expirationDate)
+                    const expiresIn = (endDate.getTime() - now.getTime())
+                    vuexContext.dispatch('setAutologout', expiresIn)
+                    break
+                  }
+                }    
+              })
+              .catch(err => {
+                vuexContext.commit('setError', 'Could not Autologin. Refresh the page or Login again')
+                return context.error(err)
+              })
+          }
         })
         .catch(err => {
           return context.error(err)
-        })
+        })      
+      
     )
   },
   addPost ({ commit, state }, formData) {
@@ -107,12 +138,6 @@ export const actions = {
         returnSecureToken: true
       })
         .then( data => {
-          // Write localStorage
-              // localStorage.setItem('token', data.idToken)
-              // localStorage.setItem('user', formData.email)
-              // const now = new Date()
-              // const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
-              // localStorage.setItem('expiresOn', expirationDate)
           // Write cookies
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
@@ -211,9 +236,6 @@ export const actions = {
     )
   },
   logout ({ commit }) {
-        // localStorage.removeItem('token')
-        // localStorage.removeItem('user')
-        // localStorage.removeItem('expiresOn')
     // Remove cookies
     // this.$cookies.removeAll() //works only on root-path '/'
     this.$cookies.remove('token', {path: '/'})
@@ -228,80 +250,12 @@ export const actions = {
       alert("Your session has expired! Login again")
     }, duration)
   },
-  tryAutoLogin (vueContext, serverContext) {
-    // Check if server side or client side
-    if (serverContext.req) {
-      // Server side
-      const req = serverContext.req
-      if (!req.headers.cookie) {
-        // Abort if no cookie token
-        return
-      }
-      const token = serverContext.app.$cookies.get('token')
-      const userEmail = serverContext.app.$cookies.get('user')
-      const expirationDate = serverContext.app.$cookies.get('expirationDate')
-    
-      let user = {}
-      serverContext.app.$axios.$get('/users.json?orderBy="email"&equalTo="' + userEmail + '"')
-      .then(data => {
-        const id = Object.keys(data)
-        user = data[id]
-        user.id = id[0]
-        user.idToken = token
-        serverContext.store.commit('loadUser', user)
-        serverContext.store.commit('setError', '')
-        // Setting committime for autologout
-        const now = new Date()
-        const endDate = new Date(expirationDate)
-        const expiresIn = (endDate.getTime() - now.getTime())
-        console.log('server expires in:' + expiresIn)
-        serverContext.store.dispatch('setAutologout', expiresIn)    
-      })
-      .catch(err => {
-        serverContext.store.commit('setError', 'Could not Autologin. Refresh the page or Login again')
-        console.log(err)
-      })
-
-
-    // Client side
-    } else {
-      // Client side
-    }
-    if (!this.$cookies.get('token')) {
-      return
-    }
-    const token = this.$cookies.get('token')
-    const userEmail = this.$cookies.get('user')
-    const expirationDate = this.$cookies.get('expirationDate')
-    // Read user data from firebase
-    let user = {}
-    this.$axios.$get('/users.json?orderBy="email"&equalTo="' + userEmail + '"')
-      .then(data => {
-        const id = Object.keys(data)
-        user = data[id]
-        user.id = id[0]
-        user.idToken = token
-        vueContext.commit('loadUser', user)
-        vueContext.commit('setError', '')
-        // Setting committime for autologout
-        const now = new Date()
-        const endDate = new Date(expirationDate)
-        const expiresIn = (endDate.getTime() - now.getTime())
-        console.log('client expires in:' + expiresIn)
-        vueContext.dispatch('setAutologout', expiresIn)    
-      })
-      .catch(err => {
-        vueContext.commit('setError', 'Could not Autologin. Refresh the page or Login again')
-        console.log(err)
-      })
-  },
   isLoading ({ commit }, status) {
     commit('isLoading', status)
   },
   setSearchString ({ commit }, searchValue) {
     commit('setSearchString', searchValue)
   }
-
 }
 
 export const getters = {
@@ -330,5 +284,4 @@ export const getters = {
   searchString (state) {
     return state.searchString
   }
-
 }
