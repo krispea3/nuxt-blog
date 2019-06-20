@@ -237,13 +237,12 @@ export const actions = {
         // Abort if no cookie token
         return
       }
-      console.log(serverContext)
       const token = serverContext.app.$cookies.get('token')
       const userEmail = serverContext.app.$cookies.get('user')
       const expirationDate = serverContext.app.$cookies.get('expirationDate')
     
       let user = {}
-      this.$axios.$get('/users.json?orderBy="email"&equalTo="' + userEmail + '"')
+      serverContext.app.$axios.$get('/users.json?orderBy="email"&equalTo="' + userEmail + '"')
       .then(data => {
         const id = Object.keys(data)
         user = data[id]
