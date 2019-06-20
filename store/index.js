@@ -108,19 +108,23 @@ export const actions = {
       })
         .then( data => {
           // Write localStorage
-          localStorage.setItem('token', data.idToken)
-          localStorage.setItem('user', formData.email)
+              // localStorage.setItem('token', data.idToken)
+              // localStorage.setItem('user', formData.email)
+              // const now = new Date()
+              // const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
+              // localStorage.setItem('expiresOn', expirationDate)
+          // Write cookies
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
-          localStorage.setItem('expiresOn', expirationDate)
-          // Write cookies
-          // const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
-          // const now = new Date()
           this.$cookies.set('token', data.idToken, {
             path: '/',
             expires: expirationDate
           })
           this.$cookies.set('user', formData.email, {
+            path: '/',
+            expires: expirationDate
+          })
+          this.$cookies.set('expirationDate', expirationDate, {
             path: '/',
             expires: expirationDate
           })
@@ -154,26 +158,22 @@ export const actions = {
         returnSecureToken: true
       })
         .then( data => {
-          // Set local storage
-          localStorage.setItem('token', data.idToken)
-          localStorage.setItem('user', formData.email)
+          // Set cookies
           const now = new Date()
           const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
-          localStorage.setItem('expiresOn', expirationDate)
-          commit('setError', '')
-          // Set cookies
-          // const expirationDate = new Date(now.getTime() + data.expiresIn * 1000)
-          // const now = new Date()
-          const testExpiration = new Date(now.getTime() + data.expiresIn * 1000)
           this.$cookies.set('token', data.idToken, {
             path: '/',
-            expires: testExpiration
+            expires: expirationDate
           })
           this.$cookies.set('user', formData.email, {
             path: '/',
-            expires: testExpiration
+            expires: expirationDate
           })
-          // commit('setError', '')
+          this.$cookies.set('expirationDate', expirationDate, {
+            path: '/',
+            expires: expirationDate
+          })
+          commit('setError', '')
           // Read user data on firebase
           const wrkIdToken = data.idToken
           const wrkExpiresIn = data.expiresIn
@@ -211,13 +211,14 @@ export const actions = {
     )
   },
   logout ({ commit }) {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    localStorage.removeItem('expiresOn')
+        // localStorage.removeItem('token')
+        // localStorage.removeItem('user')
+        // localStorage.removeItem('expiresOn')
     // Remove cookies
     // this.$cookies.removeAll() //works only on root-path '/'
     this.$cookies.remove('token', {path: '/'})
     this.$cookies.remove('user', {path: '/'})
+    this.$cookies.remove('expirationDate', {path: '/'})
     commit('logout')
     this.$router.push('/')
   },
@@ -227,36 +228,71 @@ export const actions = {
       alert("Your session has expired! Login again")
     }, duration)
   },
-  tryAutoLogin ({ commit, dispatch }) {
-    // If no token abort
-    if (!localStorage.token) {
-      return
-    }
-    // If token expired abort
-    const now = new Date()
-    if (now > localStorage.expiresOn) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      localStorage.removeItem('expiresOn') 
-      return
-    }
-    // Read user data from firebase
-    let user = {}
-    this.$axios.$get('/users.json?orderBy="email"&equalTo="' + localStorage.user + '"')
+  tryAutoLogin (vueContext, serverContext) {
+    // Check if server side or client side
+    if (serverContext.req) {
+      // Server side
+      const req = serverContext.req
+      if (!req.headers.cookie) {
+        // Abort if no cookie token
+        return
+      }
+      console.log(serverContext)
+      const token = serverContext.app.$cookies.get('token')
+      const userEmail = serverContext.app.$cookies.get('user')
+      const expirationDate = serverContext.app.$cookies.get('expirationDate')
+    
+      let user = {}
+      this.$axios.$get('/users.json?orderBy="email"&equalTo="' + userEmail + '"')
       .then(data => {
         const id = Object.keys(data)
         user = data[id]
         user.id = id[0]
-        user.idToken = localStorage.token
-        commit('loadUser', user)
-        commit('setError', '')
-        // Setting time for autologout
-        const endDate = new Date(localStorage.expiresOn)
+        user.idToken = token
+        serverContext.store.commit('loadUser', user)
+        serverContext.store.commit('setError', '')
+        // Setting committime for autologout
+        const now = new Date()
+        const endDate = new Date(expirationDate)
         const expiresIn = (endDate.getTime() - now.getTime())
-        dispatch('setAutologout', expiresIn)    
+        console.log('server expires in:' + expiresIn)
+        serverContext.store.dispatch('setAutologout', expiresIn)    
       })
       .catch(err => {
-        commit('setError', 'Could not Autologin. Refresh the page or Login again')
+        serverContext.store.commit('setError', 'Could not Autologin. Refresh the page or Login again')
+        console.log(err)
+      })
+
+
+    // Client side
+    } else {
+      // Client side
+    }
+    if (!this.$cookies.get('token')) {
+      return
+    }
+    const token = this.$cookies.get('token')
+    const userEmail = this.$cookies.get('user')
+    const expirationDate = this.$cookies.get('expirationDate')
+    // Read user data from firebase
+    let user = {}
+    this.$axios.$get('/users.json?orderBy="email"&equalTo="' + userEmail + '"')
+      .then(data => {
+        const id = Object.keys(data)
+        user = data[id]
+        user.id = id[0]
+        user.idToken = token
+        vueContext.commit('loadUser', user)
+        vueContext.commit('setError', '')
+        // Setting committime for autologout
+        const now = new Date()
+        const endDate = new Date(expirationDate)
+        const expiresIn = (endDate.getTime() - now.getTime())
+        console.log('client expires in:' + expiresIn)
+        vueContext.dispatch('setAutologout', expiresIn)    
+      })
+      .catch(err => {
+        vueContext.commit('setError', 'Could not Autologin. Refresh the page or Login again')
         console.log(err)
       })
   },
