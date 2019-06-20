@@ -74,10 +74,10 @@ export const actions = {
                     vuexContext.commit('loadUser', user)
                     vuexContext.commit('setError', '')
                     // Setting time for autologout
-                    const now = new Date()
-                    const endDate = new Date(expirationDate)
-                    const expiresIn = (endDate.getTime() - now.getTime())
-                    vuexContext.dispatch('setAutologout', expiresIn)
+                    // const now = new Date()
+                    // const endDate = new Date(expirationDate)
+                    // const expiresIn = (endDate.getTime() - now.getTime())
+                    // vuexContext.dispatch('setAutologout', expiresIn)
                     break
                   }
                 }    
@@ -86,7 +86,9 @@ export const actions = {
                 vuexContext.commit('setError', 'Could not Autologin. Refresh the page or Login again')
                 return context.error(err)
               })
-          }
+          } else {
+              return
+            }
         })
         .catch(err => {
           return context.error(err)
@@ -235,19 +237,19 @@ export const actions = {
         })
     )
   },
-  logout ({ commit }) {
+  logout (context) {
     // Remove cookies
     // this.$cookies.removeAll() //works only on root-path '/'
     this.$cookies.remove('token', {path: '/'})
     this.$cookies.remove('user', {path: '/'})
-    this.$cookies.remove('expirationDate', {path: '/'})
-    commit('logout')
+    this.$cookies.remove('expirationDate', {path: '/'})    
+    context.commit('logout')
     this.$router.push('/')
   },
-  setAutologout ({ dispatch }, duration) {
+  setAutologout (context, duration) {
     setTimeout(()=>{
-      dispatch('logout')
-      alert("Your session has expired! Login again")
+      context.dispatch('logout')
+      alert("Your session has expired! Login again")  
     }, duration)
   },
   isLoading ({ commit }, status) {
