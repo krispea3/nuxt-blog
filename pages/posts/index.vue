@@ -1,5 +1,7 @@
 <template>
-    <PostList :isAdmin="false" :isPreview="true" displayType="list"/>
+  <div>
+    <PostList :isAdmin="false" :isPreview="true"/>
+  </div>
 </template>
 
 <script>

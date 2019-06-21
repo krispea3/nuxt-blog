@@ -2,7 +2,8 @@
   <PostForm 
     @onSave="onSave"
     @onDelete="onDelete"
-    :post="loadedPost" />
+    :post="loadedPost"
+    :error="error" />
 </template>
 
 <script>
@@ -22,6 +23,11 @@ export default {
         .catch(err => context.error(err))
     )
   },
+  computed: {
+    error () {
+      return this.$store.getters.error
+    }
+  },
   components: {
     PostForm
   },
@@ -30,7 +36,9 @@ export default {
       this.$store.dispatch('updatePost', {formData: formData, id: this.$route.params.id})
       // The updatePost action returns the axios promise. So we will enter .then when axios wrote the data to firebase
         .then(() => {
-          this.$router.push('/admin')
+          if (!this.error) {
+           this.$router.push('/admin')
+          }
         })
     },
     onDelete () {
@@ -39,7 +47,8 @@ export default {
           this.$router.push('/admin')
         })
     }
-  }
+  },
+  middleware: ['check-auth', 'auth']
 }
 </script>
 

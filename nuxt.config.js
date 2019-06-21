@@ -19,7 +19,9 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // Google fonts Open Sans
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"}
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"},
+      // Google materia-design icons
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/icon?family=Material+Icons"},
     ]
   },
 
@@ -51,7 +53,8 @@ export default {
   */
   plugins: [
     '~plugins/core-components.js',
-    '~plugins/date-filter.js'
+    '~plugins/date-filter.js',
+    '~plugins/Vuelidate.js'
   ],
 
   /*
@@ -63,7 +66,11 @@ export default {
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
     // Doc: https://github.com/nuxt-community/axios-module
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // Doc: https://www.npmjs.com/package/cookie-universal-nuxt
+    'cookie-universal-nuxt',
+    // Doc: https://github.com/nuxt-community/dotenv-module
+    '@nuxtjs/dotenv'
   ],
   // Made available through modules. No need to import axios anymore
   // Access it with:
@@ -90,14 +97,19 @@ export default {
 
   // Additional settings. Not displayed at creation of nux.config.js
     // Set environment variables
-  env: {
-    // Here we set the baseURL environment variable. If the server it's running on has one in process.env
-    // It will take that. If it's not set it will take the hardcode one
-    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9be94.firebaseio.com'
-  },
+  // env: {
+  //   // Here we set the baseURL environment variable. If the server it's running on has one in process.env
+  //   // It will take that. If it's not set it will take the hardcode one
+  //   baseURL: process.env.BASE_URL || 'https://nuxt-blog-9be94.firebaseio.com',
+  // },
   // in router we can override all attributes of the router contructor
   route: {
 
+  },
+  // Router to run the middleware for all routes. 
+  // middleware takes a string with filename without extension and without path
+  router: {
+    middleware: 'clearErrorMsg'
   },
   // Here we can define general transitions on route change. The css for it is in ~assets/styles/main.css
   // See CSS section above to include it into nuxt

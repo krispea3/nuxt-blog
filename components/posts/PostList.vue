@@ -1,9 +1,17 @@
 <template>
   <div>
-    <div v-if="displayType != 'list'">
+    <!-- Display posts as cards -->
+    <div v-if="selectedDisplayType === 'card'">
+      <b-row class="mb-3" no-gutters align-h="center">
+        <b-col cols="12">
+          <Header
+            :selected="displayType"
+            @displayType="setDisplayType" />
+      </b-col>
+      </b-row>
       <b-row no-gutters align-h="center">
         <b-card-group deck>
-        <div  v-for="post in posts" :key="post.id">
+        <div  v-for="post in filteredPosts" :key="post.id">
           <PostDetail
             :isPreview="true" 
             :isAdmin="isAdmin" 
@@ -13,25 +21,35 @@
         </b-card-group>
       </b-row>
     </div>
-
-    <div v-else>
-        <div  v-for="post in posts" :key="post.id">
-          <b-row no-gutters align-h="center">
-            <b-col cols="10">
-            <PostDetail
-              :isPreview="true" 
-              :isAdmin="isAdmin" 
-              :post="post">
-            </PostDetail>
-            </b-col>
-          </b-row>
-        </div>
+    
+    <!-- Display posts as list -->
+    <div v-if="selectedDisplayType === 'list'">
+      <b-row class="mb-3" no-gutters align-h="center">
+        <b-col cols="10">
+          <Header
+            :selected="displayType"
+            @displayType="setDisplayType"/>
+        </b-col>
+      </b-row>
+      <div  v-for="post in filteredPosts" :key="post.id">
+        <b-row no-gutters align-h="center">
+          <b-col cols="10">
+          <PostDetail
+            :isPreview="true" 
+            :isAdmin="isAdmin" 
+            :post="post">
+          </PostDetail>
+          </b-col>
+        </b-row>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import PostDetail from './PostDetail'
+import Search from '~/components/Search'
+import Header from '~/components/posts/Header'
 
 export default {
   // This vue lifecycle hook executes on the client
@@ -40,20 +58,37 @@ export default {
   },
   data () {
     return {
-      posts: []
+      posts: [],
+      displayType: 'card'
+    }
+  },
+  computed: {
+    filteredPosts () {
+      const search = this.$store.getters.searchString
+      if (search === '') {
+        return this.posts
+      } else {
+        return this.posts.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
+      }
+    },
+    selectedDisplayType () {
+      return this.displayType
     }
   },
   components: {
-    PostDetail
+    PostDetail,
+    Search,
+    Header
   },
   props: {
     isAdmin: {
       type: Boolean,
       required: true
     },
-    displayType: {
-      type: String,
-      required: false
+  },
+  methods: {
+    setDisplayType (type) {
+      this.displayType = type
     }
   }
 }
