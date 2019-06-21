@@ -200,17 +200,19 @@ export const actions = {
           const wrkIdToken = data.idToken
           const wrkExpiresIn = data.expiresIn
           let user = {}
-          this.$axios.$get('/users.json?orderBy="email"&equalTo="' + formData.email + '"')
-            .then(data => {
-              const id = Object.keys(data)
-              user = data[id]
-              user.id = id[0]
-              user.idToken = wrkIdToken
-              commit('login', user)
-              commit('setError', '')
-              dispatch('setAutologout', wrkExpiresIn * 1000)
-            })
-            .catch(err => console.log(err))
+          return (
+            this.$axios.$get('/users.json?orderBy="email"&equalTo="' + formData.email + '"')
+              .then(data => {
+                const id = Object.keys(data)
+                user = data[id]
+                user.id = id[0]
+                user.idToken = wrkIdToken
+                commit('login', user)
+                commit('setError', '')
+                dispatch('setAutologout', wrkExpiresIn * 1000)
+              })
+              .catch(err => console.log(err))
+          )
         })
         .catch(err => {
           commit('setError', 'Invalid email or password')
