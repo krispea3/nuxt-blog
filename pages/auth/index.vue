@@ -27,7 +27,7 @@ export default {
         .then( () => {
           this.$store.dispatch('isLoading', false)
           if (!this.error) {
-            this.$router.go(-1)
+            this.$router.push('/admin')
           }
         })
     },
@@ -36,7 +36,7 @@ export default {
         .then( () => {
           this.$store.dispatch('isLoading', false)
           if (!this.error) {
-            this.$router.go(-1)
+            this.$router.push('/admin')
           }
         })
     },

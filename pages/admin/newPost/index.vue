@@ -25,6 +25,6 @@ export default {
         })
     }
   },
-  middleware: 'auth'
+  middleware: ['check-auth', 'auth']
 }
 </script>

@@ -73,11 +73,6 @@ export const actions = {
                     user.idToken = token
                     vuexContext.commit('loadUser', user)
                     vuexContext.commit('setError', '')
-                    // Setting time for autologout
-                    // const now = new Date()
-                    // const endDate = new Date(expirationDate)
-                    // const expiresIn = (endDate.getTime() - now.getTime())
-                    // vuexContext.dispatch('setAutologout', expiresIn)
                     break
                   }
                 }    
@@ -244,7 +239,7 @@ export const actions = {
     this.$cookies.remove('user', {path: '/'})
     this.$cookies.remove('expirationDate', {path: '/'})    
     context.commit('logout')
-    this.$router.push('/')
+    this.$router.push('/auth?isLogin="true"')
   },
   setAutologout (context, duration) {
     setTimeout(()=>{
