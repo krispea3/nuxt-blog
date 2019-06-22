@@ -3,6 +3,7 @@ import pkg from './package'
 const bodyParser = require('body-parser')
 
 export default {
+  // This is the mode used to build the app for deployment using yarn run build (see scripts in package.json)
   mode: 'universal',
 
   /*
