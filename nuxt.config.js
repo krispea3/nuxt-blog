@@ -3,6 +3,23 @@ import pkg from './package'
 const bodyParser = require('body-parser')
 
 export default {
+  // This is the mode used to build the app for deployment using yarn run build (see scripts in package.json)
+
+  // possible modes: 'universal', 'spa', 'static',
+
+  // Just run yarn build
+
+  // If mode: 'universal' we need to upload the whole project to the hoster. Hoster MUST have nodeJS environment
+      // To test just run yarn run start
+
+  // If mode: 'spa' we only need to upload the dist folder. Hoster doesn't need nodejs environment
+      // To test install yarn package http-server globally. (yarn global add http-server)
+      // Then go into .dist directory of your project (cd project/dist)
+      // Then run command http-server -p -8082 (or whatever port you want the server to run on)
+      // !!! If you plan to deploy in 'spa' mode you cannot use nuxtServerInit and asyncData as all the code
+        // is run on the client! You need to use created() or mounted() hooks to load the data
+        // Also you cannot use your own server as api. You need to use Firebase for example !!!!!!
+
   mode: 'spa',
 
   /*
