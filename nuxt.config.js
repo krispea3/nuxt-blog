@@ -3,7 +3,7 @@ import pkg from './package'
 const bodyParser = require('body-parser')
 
 export default {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers of the page
