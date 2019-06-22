@@ -1,4 +1,6 @@
 import pkg from './package'
+// Needs the require syntax as it will run on the nodeServer
+const bodyParser = require('body-parser')
 
 export default {
   mode: 'universal',
@@ -41,8 +43,7 @@ export default {
 
   /*
   ** Global CSS
-  */
-  css: [
+  */  css: [
     './assets/styles/main.css'
   ],
 
@@ -116,5 +117,13 @@ export default {
   pageTransition: {
     name: 'fade',
     mode: 'out-in'
-  }
+  },
+  // Server side code that is executed befor the server side rendering of the app
+  // Here we can attach our own server. In this example an Express server
+  serverMiddleware: [
+    // will parse the req.body in node Express
+    bodyParser.json(),
+    // Path to the server. Will look for index.js in this path
+    '~/api'
+  ]
 }
