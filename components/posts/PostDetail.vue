@@ -17,7 +17,7 @@
           :sub-title="post.description">
         </b-card-sub-title>
 
-        <b-card-text v-if="!isPreview" class="text-left">
+        <b-card-text v-if="!isPreview">
           <p class="lineBreak">{{ post.content }}</p>
         </b-card-text>
 
