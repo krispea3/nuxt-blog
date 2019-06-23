@@ -6,7 +6,6 @@
       id="form-input-search"
       class="mb-2 mr-sm-2 mb-sm-0"
       placeholder="Search"
-      autofocus
       v-model="search"
     >
     </b-input>
