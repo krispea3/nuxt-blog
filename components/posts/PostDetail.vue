@@ -18,7 +18,7 @@
         </b-card-sub-title>
 
         <b-card-text v-if="!isPreview" class="text-left">
-          <p>{{ post.content }}</p>
+          <p class="lineBreak">{{ post.content }}</p>
         </b-card-text>
 
         <div class="mt-3">
@@ -84,3 +84,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .lineBreak {
+    white-space: pre-wrap;
+  }
+</style>
