@@ -2,6 +2,7 @@
       <b-card class="mb-3 text-center">
 
         <b-card-img v-if="!isPreview"
+          class="mb-3"
           :src="post.imgUrl" 
           :alt="post.imgAlt"
           img-top>
@@ -83,11 +84,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .card-img {
-    width: 100%;
-    height: 15vw;
-    object-fit: cover;
-}
-</style>
