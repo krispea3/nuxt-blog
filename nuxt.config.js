@@ -87,8 +87,6 @@ export default {
     '@nuxtjs/axios',
     // Doc: https://www.npmjs.com/package/cookie-universal-nuxt
     'cookie-universal-nuxt',
-    // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
   ],
   // Made available through modules. No need to import axios anymore
   // Access it with:
