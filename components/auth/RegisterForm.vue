@@ -8,7 +8,6 @@
           id="input-1"
           v-model="form.firstName"
           type="text"
-          autofocus
           placeholder="Enter firstname"
           @blur="$v.form.firstName.$touch()">
         </b-form-input>

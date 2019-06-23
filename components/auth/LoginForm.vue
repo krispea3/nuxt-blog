@@ -10,7 +10,6 @@
           v-model="form.email"
           type="email"
           placeholder="Enter email"
-          autofocus
           @blur="$v.form.email.$touch()">
         </b-form-input>
         <div v-if="$v.form.email.$dirty">
