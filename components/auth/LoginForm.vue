@@ -46,6 +46,11 @@
           Login
         <b-spinner v-if="isLoading" small></b-spinner>
       </b-button>
+      <b-button
+        @click="$router.go(-1)">
+          Cancel
+      </b-button>
+
     </b-form>
 </template>
 
