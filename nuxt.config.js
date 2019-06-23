@@ -20,7 +20,7 @@ export default {
         // is run on the client! You need to use created() or mounted() hooks to load the data
         // Also you cannot use your own server as api. You need to use Firebase for example !!!!!!
 
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers of the page
